@@ -4,6 +4,8 @@ import { AiFillProduct } from "react-icons/ai";
 import { FaFileInvoiceDollar } from "react-icons/fa";
 import AdminProductsPage from "./admin/products";
 import AddProductionForm from "./addProductForm";
+import EditProductionForm from "./admin/editProductForm";
+
 
 export default function AdminPage (){
     return(
@@ -24,6 +26,7 @@ export default function AdminPage (){
                 <Route path="/products" element={<AdminProductsPage/>}/>
                 <Route path="/orders" element={<h1>orders</h1>}/>
                 <Route path="/addProducts" element={<AddProductionForm/>}/>
+                <Route path="/editProduct" element={<EditProductionForm/>}/>
 
                 </Routes>
 

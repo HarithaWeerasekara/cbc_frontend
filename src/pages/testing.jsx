@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import mediaUpload from "../utils/meadiaUpload";
+import mediaUpload from "../utils/mediaUpload";
 // adjust path as needed
 
 export default function Testing() {

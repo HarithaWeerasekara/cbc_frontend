@@ -2,20 +2,19 @@ import { useState } from "react"
 import axios from "axios"; 
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 
 export default function LoginPage(){
 
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
+    const [loading,setLoading] = useState(false)
     const navigate = useNavigate()
 
 
     function handleLogin (){
 
-
-        console.log("email:" ,email)
-        console.log("password:" ,password)
+        setLoading(true)
 
         axios.post(import.meta.env.VITE_BACKEND_URL+"/api/user/login",{
             email : email,
@@ -33,12 +32,14 @@ export default function LoginPage(){
                 if(user.role === "admin"){
                     navigate("/admin/dashbord")
                 }else {
-                    navigate("/")}
+                    navigate("/")
+                }setLoading(false)
             }
         ).catch(
             (error)=>{
                 console.log ("Login unsuccessful",error.response.data);
                 toast.error(error.response.data.message||"Login failed");
+                setLoading(false)
             }
         )
 
@@ -63,7 +64,18 @@ export default function LoginPage(){
                setPassword(e.target.value)
 
             }}  className="w-[400px] h-[50px] bg-[#fecaca] border border-[#450a0a] rounded-xl text-center text-[#4c0519] " type="password" placeholder="Password"/>
-            <button onClick={handleLogin} className="w-[400px] h-[50px] bg-[#fca5a5] border border-[#450a0a] text-[#4c0519] rounded-xl text-center m-[8px] cursor-pointer">Login</button>
+            <button onClick={handleLogin} className="w-[400px] h-[50px] bg-[#fca5a5] border border-[#450a0a] text-[#4c0519] rounded-xl text-center m-[8px] cursor-pointer">
+                {
+                    loading?"Loading....":"Login"
+                }
+            </button>
+
+            <p className="text-gray-600 text-center m-[8px] text-[15px] font-semibold ">
+                Don't have an accound yet? <br /> 
+                <span className="text-pink-900 cursor-pointer hover:text-pink-400">
+                    <Link to={"/register"}>Register now</Link>
+                </span>
+            </p>
 
            </div>
           

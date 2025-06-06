@@ -3,7 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import mediaUpload from '../utils/meadiaUpload';
+import mediaUpload from '../utils/mediaUpload';
 
 export default function AddProductionForm (){
 
