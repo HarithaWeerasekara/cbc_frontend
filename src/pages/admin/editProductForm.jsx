@@ -68,11 +68,10 @@ export default function EditProductionForm() {
             const token = localStorage.getItem('token');
 
             await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/product/${productId}`, product, {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
-
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
             toast.success("Product updated successfully");
             navigate("/admin/products");
@@ -84,35 +83,35 @@ export default function EditProductionForm() {
     };
 
     return (
-        <div className="w-full h-full bg-[#575656] rounded-lg flex justify-center items-center">
-            <div className="w-[400px] h-[600px] rounded-lg shadow-lg bg-[#2c2c2e] flex flex-col justify-center items-center">
-                <h1 className="text-3xl font-bold text-[#f5f5f5] m-[10px]">Edit Product</h1>
+        <div className="w-full h-full bg-gray-100 rounded-lg flex justify-center items-center">
+            <div className="w-[400px] h-[600px] rounded-lg shadow-lg bg-white flex flex-col justify-center items-center p-6">
+                <h1 className="text-3xl font-bold text-gray-900 mb-6">Edit Product</h1>
 
                 <input
                     disabled
                     value={productId}
-                    className="w-[385px] h-[40px] bg-[#3a3a3c] rounded-xl text-center text-[#e5e5e5] m-[8px]"
+                    className="w-full h-10 bg-gray-200 rounded-xl text-center text-gray-700 mb-4"
                     placeholder="Product ID"
                 />
 
                 <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-[385px] h-[40px] bg-[#3a3a3c] rounded-xl text-center text-[#e5e5e5] m-[8px]"
+                    className="w-full h-10 bg-gray-50 rounded-xl text-center text-gray-900 mb-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Product Name"
                 />
 
                 <input
                     value={altNames}
                     onChange={(e) => setAltNames(e.target.value)}
-                    className="w-[385px] h-[40px] bg-[#3a3a3c] rounded-xl text-center text-[#e5e5e5] m-[8px]"
+                    className="w-full h-10 bg-gray-50 rounded-xl text-center text-gray-900 mb-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Alternative Names"
                 />
 
                 <input
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    className="w-[385px] h-[40px] bg-[#3a3a3c] rounded-xl text-center text-[#e5e5e5] m-[8px]"
+                    className="w-full h-10 bg-gray-50 rounded-xl text-center text-gray-900 mb-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Price"
                 />
 
@@ -120,14 +119,14 @@ export default function EditProductionForm() {
                     value={labeledPrice}
                     onChange={(e) => setLabeledPrice(e.target.value)}
                     type="number"
-                    className="w-[385px] h-[40px] bg-[#3a3a3c] rounded-xl text-center text-[#e5e5e5] m-[8px]"
+                    className="w-full h-10 bg-gray-50 rounded-xl text-center text-gray-900 mb-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Labeled Price"
                 />
 
                 <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-[385px] h-[80px] bg-[#3a3a3c] rounded-xl text-center text-[#e5e5e5] m-[8px]"
+                    className="w-full h-20 bg-gray-50 rounded-xl text-gray-900 mb-4 border border-gray-300 p-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Description"
                 />
 
@@ -135,28 +134,28 @@ export default function EditProductionForm() {
                     type="file"
                     onChange={(e) => setImages(Array.from(e.target.files))}
                     multiple
-                    className="w-[385px] h-[40px] bg-[#3a3a3c] rounded-xl text-[#e5e5e5] m-[8px]"
+                    className="w-full h-10 bg-gray-50 rounded-xl text-gray-700 mb-4 border border-gray-300 px-2"
                 />
 
                 <input
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
                     type="number"
-                    className="w-[385px] h-[40px] bg-[#3a3a3c] rounded-xl text-center text-[#e5e5e5] m-[8px]"
+                    className="w-full h-10 bg-gray-50 rounded-xl text-center text-gray-900 mb-6 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Stock"
                 />
 
-                <div className="w-[400px] p-2.5 h-[100px] flex justify-between items-center">
+                <div className="w-full flex justify-between items-center">
                     <Link
                         to="/admin/products"
-                        className="bg-[#4b5563] text-white w-[180px] text-center p-[10px] rounded-lg hover:bg-[#6b7280]"
+                        className="bg-gray-400 text-gray-900 w-[48%] text-center p-3 rounded-lg hover:bg-gray-500 transition"
                     >
                         Cancel
                     </Link>
 
                     <button
                         onClick={handleSubmit}
-                        className="bg-[#2563eb] text-white w-[180px] text-center p-[10px] rounded-lg ml-[10px] hover:bg-[#3b82f6]"
+                        className="bg-blue-600 text-white w-[48%] text-center p-3 rounded-lg hover:bg-blue-700 transition"
                     >
                         Edit Product
                     </button>

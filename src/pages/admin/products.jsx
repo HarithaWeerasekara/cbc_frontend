@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
@@ -7,143 +7,94 @@ import { GrEdit } from "react-icons/gr";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../components/loader";
 
+export default function AdminProductsPage() {
+  const [products, setProducts] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
 
-
-export default function AdminProductsPage(){
-
-    const [products, setProducts] = useState([])
-    const [loaded, setLoaded] = useState(false)
-    const navigate = useNavigate()
-
-    useEffect(()=>{
-        if (!loaded) {
-        axios.get(import.meta.env.VITE_BACKEND_URL+"/api/product").then(
-        (response)=>{
-            console.log(response.data);    
-            setProducts(response.data)
-            setLoaded(true)
-        }
-    )
-}
-   
-        
+  useEffect(() => {
+    if (!loaded) {
+      axios.get(import.meta.env.VITE_BACKEND_URL + "/api/product").then((response) => {
+        console.log(response.data);
+        setProducts(response.data);
+        setLoaded(true);
+      });
     }
+  }, [loaded]);
 
-    ,[loaded]
-)
-
-async function deleteProduct(id) {
-
-    const token = localStorage.getItem('token')
-    
-    if (token==null) {
-
-        toast.error("You are not logged in")
-        return;
-
+  async function deleteProduct(id) {
+    const token = localStorage.getItem("token");
+    if (token == null) {
+      toast.error("You are not logged in");
+      return;
     }
-    
-    try { 
+    try {
+      await axios.delete(import.meta.env.VITE_BACKEND_URL + "/api/product/" + id, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      toast.success("Product deleted successfully");
+      setProducts((prev) => prev.filter((product) => product.productId !== id));
+    } catch (error) {
+      console.log(error);
+      toast.error("Error deleting product");
+    }
+  }
 
-        await axios.delete (import.meta.env.VITE_BACKEND_URL+"/api/product/"+id, {
+  return (
+    <div className="w-full h-full bg-gray-50 p-4 md:p-6">
+      <Link
+        to={"/admin/addProducts"}
+        className="fixed z-10 bottom-5 right-5 bg-blue-600 text-white p-3 text-2xl rounded-full shadow-lg hover:bg-blue-700 transition"
+      >
+        <FaPlus />
+      </Link>
 
-            headers: {
-            Authorization: "Bearer "+token
-
-        }
-
-    } 
-)
-
-    toast.success("Product deleted successfully")
-    setProducts(prev => prev.filter(product => product.productId !== id));
-    
-
-}catch (error) {
-
-    console.log(error)
-
-    toast.error("Error deleting product")
-    
-    return;
-}
-
-}
-
-    
-    
-    return(
-        <div className="w-full h-full rounded-lg relative" >
-            <Link to={"/admin/addProducts"} className="bg-gray-400 absolute text-white p-[12px] text-3xl rounded-full cursor-pointer hover:bg-gray-500 hover:text-gray-700 right-5 bottom-5">
-            <FaPlus />
-            </Link>
-
-            {loaded&&<table className="w-full">
-                <thead>
-                    <tr>
-                        <th className="p-2">Product ID</th>
-                        <th className="p-2">Name</th>
-                        <th className="p-2">Price</th>
-                        <th className="p-2">Labled Price</th>
-                        <th className="p-2">Stock</th>
-                        <th className="p-2">Actions</th>
-
-                    </tr>
-
-                </thead>
-                <tbody>
-                {
-                products.map(
-                    (product,index)=>{
-                        console.log("mapping"+product.productId)
-                        return(
-                            <tr key={index} className="border-b-2 border-gray-300 hover:bg-gray-300 cursor-pointer text-center">
-                                <td className="p-2">{product.productId}</td>
-                                <td className="p-2">{product.name}</td>
-                                <td className="p-2">{product.price}</td>
-                                <td className="p-2">{product.labeledPrice}</td>
-                                <td className="p-2">{product.stock}</td>
-                                <td className="p-2">
-                                    <div className="w-full h-full flex justify-center items-center gap-4">
-                                    <FaRegTrashAlt onClick={()=>{
-                                        deleteProduct(product.productId)
-                                    }} className="text-[22px] m-[5px] hover:text-red-600 " /> 
-                                    <GrEdit onClick={()=>{
-                                        navigate ("/admin/editProduct",{
-                                            state:product
-                                            
-                                        })
-                                    }}
-                                    className="text-[22px] m-[5px] hover:text-blue-500"/>
-                                    </div>
-                                </td>
-                            </tr> 
-                            
-                        )
-                    }
-                )
-            }
-                </tbody>
-            </table>}
-            {
-                !loaded&&
-                <Loader/>
-
-            }
-
-            {
-                products.map(
-                    (product,index)=>{
-                        console.log("mapping"+product.productId)
-                        return(
-                            <div key={index} className="">
-                                
-                            </div>
-                            
-                        )
-                    }
-                )
-            }
+      {loaded ? (
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[640px] border-collapse border border-gray-300 shadow-md rounded-lg overflow-hidden">
+            <thead className="bg-blue-100">
+              <tr>
+                <th className="p-3 border border-gray-300 text-left text-blue-900 font-semibold">Product ID</th>
+                <th className="p-3 border border-gray-300 text-left text-blue-900 font-semibold">Name</th>
+                <th className="p-3 border border-gray-300 text-right text-blue-900 font-semibold">Price</th>
+                <th className="p-3 border border-gray-300 text-right text-blue-900 font-semibold">Labeled Price</th>
+                <th className="p-3 border border-gray-300 text-right text-blue-900 font-semibold">Stock</th>
+                <th className="p-3 border border-gray-300 text-center text-blue-900 font-semibold">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product, index) => (
+                <tr
+                  key={index}
+                  className="border-b border-gray-200 hover:bg-blue-50 text-gray-800"
+                >
+                  <td className="p-3 border border-gray-300 text-sm">{product.productId}</td>
+                  <td className="p-3 border border-gray-300 text-sm">{product.name}</td>
+                  <td className="p-3 border border-gray-300 text-right text-sm">{product.price.toFixed(2)}</td>
+                  <td className="p-3 border border-gray-300 text-right text-sm">{product.labeledPrice.toFixed(2)}</td>
+                  <td className="p-3 border border-gray-300 text-right text-sm">{product.stock}</td>
+                  <td className="p-3 border border-gray-300 text-center">
+                    <div className="flex justify-center items-center gap-3">
+                      <FaRegTrashAlt
+                        onClick={() => deleteProduct(product.productId)}
+                        className="text-lg text-red-600 hover:text-red-700 cursor-pointer transition"
+                      />
+                      <GrEdit
+                        onClick={() => navigate("/admin/editProduct", { state: product })}
+                        className="text-lg text-blue-600 hover:text-blue-700 cursor-pointer transition"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-    )
+      ) : (
+        <Loader />
+      )}
+    </div>
+  );
 }
