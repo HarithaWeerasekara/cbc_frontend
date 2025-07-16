@@ -11,11 +11,13 @@ import RegisterPage from './pages/client/register'
 import HomePage from './pages/homePage'
 import Checkout from './pages/client/checkout'
 import Orders from './pages/admin/order'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 function App() {
   
 
   return (
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
     <BrowserRouter>
     <Toaster position='top-right'/>
 
@@ -41,6 +43,7 @@ function App() {
     
     
     </BrowserRouter>
+    </GoogleOAuthProvider>
   )
 
   

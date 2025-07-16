@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa";
+import { FaRegTrashAlt, FaPlus } from "react-icons/fa";
 import { GrEdit } from "react-icons/gr";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../components/loader";
@@ -14,77 +13,101 @@ export default function AdminProductsPage() {
 
   useEffect(() => {
     if (!loaded) {
-      axios.get(import.meta.env.VITE_BACKEND_URL + "/api/product").then((response) => {
-        console.log(response.data);
-        setProducts(response.data);
-        setLoaded(true);
-      });
+      axios
+        .get(`${import.meta.env.VITE_BACKEND_URL}/api/product`)
+        .then((response) => {
+          setProducts(response.data);
+          setLoaded(true);
+        })
+        .catch(() => {
+          toast.error("Failed to load products");
+        });
     }
   }, [loaded]);
 
   async function deleteProduct(id) {
     const token = localStorage.getItem("token");
-    if (token == null) {
+    if (!token) {
       toast.error("You are not logged in");
       return;
     }
     try {
-      await axios.delete(import.meta.env.VITE_BACKEND_URL + "/api/product/" + id, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/product/${id}`, {
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: `Bearer ${token}`,
         },
       });
       toast.success("Product deleted successfully");
       setProducts((prev) => prev.filter((product) => product.productId !== id));
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Error deleting product");
     }
   }
 
   return (
-    <div className="w-full h-full bg-gray-50 p-4 md:p-6">
+    <div className="w-full min-h-screen bg-[#fff1f2] p-4 relative">
+      {/* Floating Add Button */}
       <Link
-        to={"/admin/addProducts"}
-        className="fixed z-10 bottom-5 right-5 bg-blue-600 text-white p-3 text-2xl rounded-full shadow-lg hover:bg-blue-700 transition"
+        to="/admin/addProducts"
+        className="bg-[#be123c] hover:bg-[#9f1239] text-white p-4 fixed bottom-4 right-4 rounded-full shadow-lg z-10 transition"
+        title="Add Product"
       >
         <FaPlus />
       </Link>
 
       {loaded ? (
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[640px] border-collapse border border-gray-300 shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-blue-100">
+        <div className="w-full overflow-x-auto">
+          <table className="min-w-[900px] w-full bg-white text-sm rounded-lg shadow-md">
+            <thead className="bg-[#FC979D] text-[#7f1d1d]">
               <tr>
-                <th className="p-3 border border-gray-300 text-left text-blue-900 font-semibold">Product ID</th>
-                <th className="p-3 border border-gray-300 text-left text-blue-900 font-semibold">Name</th>
-                <th className="p-3 border border-gray-300 text-right text-blue-900 font-semibold">Price</th>
-                <th className="p-3 border border-gray-300 text-right text-blue-900 font-semibold">Labeled Price</th>
-                <th className="p-3 border border-gray-300 text-right text-blue-900 font-semibold">Stock</th>
-                <th className="p-3 border border-gray-300 text-center text-blue-900 font-semibold">Actions</th>
+                <th className="p-3 text-left">Image</th>
+                <th className="p-3 text-left">Product ID</th>
+                <th className="p-3 text-left">Name</th>
+                <th className="p-3 text-right">Price</th>
+                <th className="p-3 text-right">Labeled Price</th>
+                <th className="p-3 text-right">Stock</th>
+                <th className="p-3 text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {products.map((product, index) => (
+              {products.map((product) => (
                 <tr
-                  key={index}
-                  className="border-b border-gray-200 hover:bg-blue-50 text-gray-800"
+                  key={product.productId}
+                  className="border-t hover:bg-[#fff0f3] transition"
                 >
-                  <td className="p-3 border border-gray-300 text-sm">{product.productId}</td>
-                  <td className="p-3 border border-gray-300 text-sm">{product.name}</td>
-                  <td className="p-3 border border-gray-300 text-right text-sm">{product.price.toFixed(2)}</td>
-                  <td className="p-3 border border-gray-300 text-right text-sm">{product.labeledPrice.toFixed(2)}</td>
-                  <td className="p-3 border border-gray-300 text-right text-sm">{product.stock}</td>
-                  <td className="p-3 border border-gray-300 text-center">
-                    <div className="flex justify-center items-center gap-3">
-                      <FaRegTrashAlt
+                  <td className="p-3">
+                    {product.images?.length > 0 ? (
+                      <img
+                        src={product.images[0]}
+                        alt="Thumbnail"
+                        className="w-12 h-12 object-cover rounded shadow"
+                      />
+                    ) : (
+                      <span className="text-xs text-gray-500">No Image</span>
+                    )}
+                  </td>
+                  <td className="p-3">{product.productId}</td>
+                  <td className="p-3">{product.name}</td>
+                  <td className="p-3 text-right">Rs {product.price.toFixed(2)}</td>
+                  <td className="p-3 text-right">Rs {product.labeledPrice.toFixed(2)}</td>
+                  <td className="p-3 text-right">{product.stock}</td>
+                  <td className="p-3 text-center">
+                    <div className="flex justify-center items-center gap-4">
+                      <button
                         onClick={() => deleteProduct(product.productId)}
-                        className="text-lg text-red-600 hover:text-red-700 cursor-pointer transition"
-                      />
-                      <GrEdit
+                        className="text-[#dc2626] hover:text-[#991b1b] transition"
+                        title="Delete"
+                      >
+                        <FaRegTrashAlt />
+                      </button>
+                      <button
                         onClick={() => navigate("/admin/editProduct", { state: product })}
-                        className="text-lg text-blue-600 hover:text-blue-700 cursor-pointer transition"
-                      />
+                        className="text-[#2563eb] hover:text-[#1d4ed8] transition"
+                        title="Edit"
+                      >
+                        <GrEdit />
+                      </button>
                     </div>
                   </td>
                 </tr>

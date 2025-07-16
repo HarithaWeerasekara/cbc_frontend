@@ -48,11 +48,18 @@ export default function Checkout() {
       address,
       phoneNumber: phone,
       billItems: cart.map((item) => ({
-        productId: item.productId,
-        quantity: item.quantity,
-        price: item.price,
-      })),
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.price,
+          image: item.image,
+          productName: item.name,
+          labeledPrice: item.labeledPrice,
+})),
     };
+
+    
+
+    console.log("Bill Items to send:", orderData.billItems)
 
     axios
       .post(`${import.meta.env.VITE_BACKEND_URL}/api/order`, orderData, {

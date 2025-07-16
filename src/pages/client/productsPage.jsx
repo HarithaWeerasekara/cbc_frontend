@@ -23,24 +23,20 @@ export default function ProductsPage() {
   }, [productsLoaded]);
 
   return (
-    <div className="min-h-screen w-full bg-[#F9F9F9] py-8 px-4">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-center text-[#9B3C6C] mb-8">
-          Explore Our Products
-        </h1>
-
-        {productsLoaded ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <div className="min-h-screen w-full bg-[#ECDCDF] py-6 px-4">
+      {productsLoaded ? (
+        <div className="flex justify-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl">
             {productList.map((product) => (
               <ProductCard key={product.productId} product={product} />
             ))}
           </div>
-        ) : (
-          <div className="flex justify-center items-center h-[60vh]">
-            <Loader />
-          </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center h-[60vh]">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 }

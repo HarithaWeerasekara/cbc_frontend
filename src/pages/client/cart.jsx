@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
   const [cart, setCart] = useState([]);
-  const [total, setTotal] = useState("0.00");
-  const [labeledTotal, setLabeledTotal] = useState("LKR 0.00");
+  const [total, setTotal] = useState(0);
+  const [labeledTotal, setLabeledTotal] = useState(0);
 
   const navigate = useNavigate();
 
@@ -16,8 +16,8 @@ export default function CartPage() {
     const labeledAmount = await getTotalForLabeledPrice();
 
     setCart(Array.isArray(result) ? result : []);
-    setTotal(totalAmount);
-    setLabeledTotal(labeledAmount);
+    setTotal(Number(totalAmount));
+    setLabeledTotal(Number(labeledAmount));
   };
 
   useEffect(() => {
@@ -27,13 +27,11 @@ export default function CartPage() {
   const handleRemove = async (productId) => {
     await removeFromCart(productId);
     fetchCart();
-
   };
 
   const handleQuantityChange = async (item, qtyChange) => {
     await addToCart(item, qtyChange);
     fetchCart();
-    
   };
 
   return (
@@ -104,15 +102,19 @@ export default function CartPage() {
 
             <div className="border-t border-[#E4E4E4] mt-6 pt-4 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
               <h2 className="text-xl font-bold text-[#222222] mb-2 sm:mb-0">Total Price</h2>
-              <p className="text-xl font-bold text-[#222222]">LKR {labeledTotal}</p>
+              <p className="text-xl font-bold text-[#222222]">LKR {labeledTotal.toFixed(2)}</p>
             </div>
             <div className="border-t border-[#E4E4E4] mt-6 pt-4 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
               <h2 className="text-xl font-bold text-[#222222] mb-2 sm:mb-0">Discount</h2>
-              <p className="text-xl font-bold border-b-[2px] text-[#C81E1E]">- LKR {labeledTotal - total}</p>
+              <p className="text-xl font-bold border-b-[2px] text-[#C81E1E]">
+                - LKR {(labeledTotal - total).toFixed(2)}
+              </p>
             </div>
             <div className="border-t border-[#E4E4E4] mt-6 pt-4 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
               <h2 className="text-xl font-bold text-[#222222] mb-2 sm:mb-0">Discounted Total Price</h2>
-              <p className="text-xl font-bold border-double border-b-[4px] text-[#1E8C3A]">LKR {total}</p>
+              <p className="text-xl font-bold border-double border-b-[4px] text-[#1E8C3A]">
+                LKR {total.toFixed(2)}
+              </p>
             </div>
 
             <button

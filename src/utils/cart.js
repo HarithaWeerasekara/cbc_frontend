@@ -12,6 +12,9 @@ export const getCart = async () => {
 
         }
 
+
+        
+
         const parsedcart = JSON.parse(cart)
 
         return Array.isArray(parsedcart) ? parsedcart : [];
@@ -44,10 +47,13 @@ export const addToCart = async (product , qty) => {
                 labeledPrice: product.labeledPrice,
                 image: product.images[0],
                 quantity: qty,
+                
 
 
 
             })
+
+        
 
         }else {
 
