@@ -17,7 +17,7 @@ export default function UserData() {
                     },
                 })
                 .then((response) => {
-                console.log("Full response:", response.data); // See the structure
+                console.log( response.data); // See the structure
                 setUser(response.data.user); // This line fails if user is not nested
 
 
