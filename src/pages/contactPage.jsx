@@ -1,5 +1,6 @@
 import { FaFacebook, FaYoutube, FaInstagram, FaEnvelope, FaPhone, FaWhatsapp } from "react-icons/fa";
 import Header from "../components/header";
+import Footer from "../components/footer";
 
 
 
@@ -95,6 +96,12 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
+    <div>
+    
+          <Footer />
+        </div>
+    
     </div>
+    
   );
 }
