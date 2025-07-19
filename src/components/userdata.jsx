@@ -5,28 +5,28 @@ import { Link } from "react-router-dom";
 export default function UserData() {
 
     const [user, setUser] = useState(null);
-    const token = localStorage.getItem("token");
+    const [token, setToken] = useState(() => localStorage.getItem("token"));
 
-    useEffect(() => 
-        {
-            if(token != null){
-
-                axios.get(import.meta.env.VITE_API_URL + "/user", {
-                    headers: { 
-                        Authorization: `Bearer ${token}`
-                    }
-                     }
-                    ).then((response)=>{
-                        setUser(response.data.user);
-                     }
-                    ).catch((e)=>{
-                        console.log(e);
-                        setUser(null);
-                        
-                    })
-            }
+    useEffect(() => {
+        const currentToken = localStorage.getItem("token");
+        if (currentToken != null) {
+            axios
+                .get(import.meta.env.VITE_API_URL + "/user", {
+                    headers: {
+                        Authorization: `Bearer ${currentToken}`,
+                    },
+                })
+                .then((response) => {
+                    setUser(response.data.user);
+                })
+                .catch((e) => {
+                    console.log(e);
+                    setUser(null);
+                });
+        } else {
+            setUser(null);
         }
-    ,[token])
+    }, [token]);
 
 
     return (
@@ -45,6 +45,7 @@ export default function UserData() {
                     onClick={() => {
                         localStorage.removeItem("token");
                         setUser(null);
+                        setToken(null);
                         window.location.assign("/login");
                     }}
                 >
