@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function userData(){
+export default function UserData() {
 
     const [user, setUser] = useState(null);
 
@@ -19,7 +19,7 @@ export default function userData(){
                 <button className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600" onClick={() => {
                     localStorage.removeItem("token");
                     setUser(null);
-                    window.location = "/login";
+                    window.location.href = "/login";
 
                 }}>
 
