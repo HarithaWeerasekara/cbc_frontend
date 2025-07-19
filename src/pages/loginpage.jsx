@@ -67,7 +67,7 @@ export default function LoginPage() {
       <div className="hidden lg:block lg:w-1/2"></div>
 
       {/* Right side (login form) */}
-      <div className="w-full h-[100px] lg:w-1/2 flex justify-center items-center p-6">
+      <div className="w-full h-[300px] lg:w-1/2 flex justify-center items-center p-6">
         <div className="w-full max-w-sm bg-white/30 backdrop-blur-2xl shadow-2xl rounded-2xl px-6 py-8 flex flex-col items-center">
           
           <input
