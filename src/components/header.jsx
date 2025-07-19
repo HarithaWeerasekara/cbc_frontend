@@ -5,46 +5,33 @@ import UserData from "./userdata";
 export default function Header() {
   return (
     <header className="bg-gradient-to-r from-[#521B41] to-[#7E3754] shadow-md sticky top-0 z-50">
-      <div className="w-full max-w-7xl mx-auto px-4 py-4 relative">
+      <div className="w-full max-w-7xl mx-auto px-4 py-4">
         
-        {/* Centered Title */}
-        <div className="flex justify-center">
-          <h1 className="text-[#FDECEF] text-lg sm:text-2xl font-extrabold tracking-wide text-center">
+        {/* Top bar: title center, cart + user right */}
+        <div className="flex items-center justify-between">
+          {/* Left spacer (empty to help center title) */}
+          <div className="w-1/4 hidden md:block" />
+
+          {/* Centered Title */}
+          <h1 className="text-[#FDECEF] text-lg sm:text-2xl font-extrabold tracking-wide text-center flex-1">
             CRYSTEL BEAUTY CLEAR.LK
           </h1>
+
+          {/* Right items: Cart and User */}
+          <div className="flex items-center justify-end gap-4 w-1/4">
+            <Link to="/cart" className="text-[#FADADD] text-2xl hover:text-white transition">
+              <GrCart />
+            </Link>
+            <UserData />
+          </div>
         </div>
 
-        <>
-  {/* Desktop: Absolute Positioned Right */}
-  <Link
-    to="/cart"
-    className="hidden md:block absolute top-10 right-20 text-[#FADADD] text-2xl hover:text-white transition "
-  >
-    <GrCart />
-  </Link>
-
-  {/* Mobile: Center Aligned */}
-  <div className="block md:hidden absolute top-9 right-10">
-    <Link
-      to="/cart"
-      className="text-[#FADADD] text-2xl hover:text-white transition"
-    >
-      <GrCart />
-    </Link>
-  </div>
-</>
-
-
-        {/* Navigation - Always visible below title */}
-        <nav className="mt-3 flex flex-wrap justify-center gap-6 text-[#FADADD] text-sm sm:text-base font-medium">
+        {/* Navigation Bar */}
+        <nav className="mt-4 flex flex-wrap justify-center gap-6 text-[#FADADD] text-sm sm:text-base font-medium">
           <Link to="/" className="hover:text-white transition">Home</Link>
           <Link to="/products" className="hover:text-white transition">Products</Link>
           <Link to="/contact" className="hover:text-white transition">Contact</Link>
           <Link to="/reviews" className="hover:text-white transition">Reviews</Link>
-          <div className="absolute right-[70px] h-full ">
-            <UserData />
-          </div>
-          
         </nav>
       </div>
     </header>
