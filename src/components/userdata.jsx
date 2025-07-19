@@ -1,9 +1,33 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function UserData() {
 
     const [user, setUser] = useState(null);
+    const token = localStorage.getItem("token");
+
+    useEffect(() => 
+        {
+            if(token != null){
+
+                axios.get(import.meta.env.VITE_API_URL + "/user", {
+                    headers: { 
+                        Authorization: `Bearer ${token}`
+                    }
+                     }
+                    ).then((response)=>{
+                        setUser(response.data.user);
+                     }
+                    ).catch((e)=>{
+                        console.log(e);
+                        setUser(null);
+                        
+                    })
+            }
+        }
+    ,[token])
+
 
     return (
     <>
