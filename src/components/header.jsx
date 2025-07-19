@@ -41,7 +41,10 @@ export default function Header() {
           <Link to="/products" className="hover:text-white transition">Products</Link>
           <Link to="/contact" className="hover:text-white transition">Contact</Link>
           <Link to="/reviews" className="hover:text-white transition">Reviews</Link>
-          <UserData />
+          <div className="absolute right-[70px] h-full ">
+            <UserData />
+          </div>
+          
         </nav>
       </div>
     </header>
