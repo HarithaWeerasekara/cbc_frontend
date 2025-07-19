@@ -41,7 +41,7 @@ export default function UserData() {
           </Link>
           <Link
             to="/register"
-            className={`${buttonStyle} border border-[#7E3754] text-[#7E3754] hover:bg-[#7E3754] hover:text-white`}
+            className={`${buttonStyle} border border-[#A83867] text-[#EBE3E6] hover:bg-[#AD6C87] hover:text-white`}
           >
             Register
           </Link>
