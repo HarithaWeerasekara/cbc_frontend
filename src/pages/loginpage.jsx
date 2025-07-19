@@ -12,10 +12,10 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   const loginWithGoogle = useGoogleLogin({
-    onSuccess: async (res) => {
+    onSuccess: async (tokenResponse) => {
       try {
         setLoading(true);
-        const accessToken = res.access_token || res.accessToken;
+        const accessToken = tokenResponse.access_token || tokenResponse.accessToken;
         if (!accessToken) {
           throw new Error("No access token received from Google");
         }
