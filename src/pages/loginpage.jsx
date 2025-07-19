@@ -16,26 +16,17 @@ export default function LoginPage() {
       try {
         setLoading(true);
         const accessToken = tokenResponse.access_token || tokenResponse.accessToken;
-        if (!accessToken) {
-          throw new Error("No access token received from Google");
-        }
+        if (!accessToken) throw new Error("No access token received from Google");
+
         const response = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/api/user/google`,
-          {
-            accessToken: accessToken,
-          }
+          { accessToken }
         );
 
         toast.success("Login successfully");
         localStorage.setItem("token", response.data.token);
-
         const user = response.data.user;
-        if (user.role === "admin") {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/");
-        }
-        
+        user.role === "admin" ? navigate("/admin/dashboard") : navigate("/");
       } catch (error) {
         console.error(error);
         toast.error("Google login failed");
@@ -53,26 +44,16 @@ export default function LoginPage() {
       setLoading(true);
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/user/login`,
-        {
-          email,
-          password,
-        }
+        { email, password }
       );
 
       toast.success("Login successfully");
       localStorage.setItem("token", response.data.token);
-
       const user = response.data.user;
-      if (user.role === "admin") {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/");
-      }
+      user.role === "admin" ? navigate("/admin/dashboard") : navigate("/");
     } catch (error) {
       const errorMessage =
-        error && error.response && error.response.data && error.response.data.message
-          ? error.response.data.message
-          : "Login failed";
+        error?.response?.data?.message || "Login failed";
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -80,28 +61,34 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full h-screen bg-[url(/login-bg.jpg)] bg-cover bg-center flex">
-      <div className="w-[50%] h-full"></div>
+    <div className="w-full min-h-screen flex flex-col lg:flex-row bg-[url(/login-bg.jpg)] bg-cover bg-center">
+      
+      {/* Left side (optional visual or background) */}
+      <div className="hidden lg:block lg:w-1/2"></div>
 
-      <div className="w-[50%] h-full flex justify-center items-center">
-        <div className="w-[450px] h-[600px] backdrop-blur-2xl shadow-2xl rounded-2xl flex flex-col justify-center items-center bg-white/30">
+      {/* Right side (login form) */}
+      <div className="w-full lg:w-1/2 flex justify-center items-center p-6">
+        <div className="w-full max-w-sm bg-white/30 backdrop-blur-2xl shadow-2xl rounded-2xl px-6 py-8 flex flex-col items-center">
+          
           <input
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             type="email"
             placeholder="Email"
-            className="w-[400px] h-[50px] bg-[#fef2f2] border border-[#be123c] rounded-xl text-center text-[#7f1d1d] m-[8px] placeholder-[#7f1d1d]"
+            className="w-full h-12 bg-[#fef2f2] border border-[#be123c] rounded-xl text-center text-[#7f1d1d] mb-3 placeholder-[#7f1d1d]"
           />
+
           <input
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             type="password"
             placeholder="Password"
-            className="w-[400px] h-[50px] bg-[#fef2f2] border border-[#be123c] rounded-xl text-center text-[#7f1d1d] m-[8px] placeholder-[#7f1d1d]"
+            className="w-full h-12 bg-[#fef2f2] border border-[#be123c] rounded-xl text-center text-[#7f1d1d] mb-3 placeholder-[#7f1d1d]"
           />
+
           <button
             onClick={handleLogin}
-            className="w-[400px] h-[50px] bg-[#fda4af] border border-[#be123c] text-[#7f1d1d] rounded-xl m-[8px] font-semibold hover:bg-[#fb7185] transition-all duration-200"
+            className="w-full h-12 bg-[#fda4af] border border-[#be123c] text-[#7f1d1d] rounded-xl font-semibold hover:bg-[#fb7185] transition duration-200 mb-3"
             disabled={loading}
           >
             {loading ? "Loading..." : "Login"}
@@ -109,18 +96,18 @@ export default function LoginPage() {
 
           <button
             onClick={() => loginWithGoogle()}
-            className="w-[400px] h-[50px] mt-[10px] bg-[#fda4af] border border-[#be123c] text-[#7f1d1d] rounded-xl m-[8px] flex justify-center items-center font-semibold hover:bg-[#fb7185] transition-all duration-200"
+            className="w-full h-12 bg-[#fda4af] border border-[#be123c] text-[#7f1d1d] rounded-xl flex justify-center items-center font-semibold hover:bg-[#fb7185] transition duration-200 mb-4"
             disabled={loading}
           >
             <FaGoogle className="mr-2" />
             {loading ? "Loading..." : "Login with Google"}
           </button>
 
-          <p className="text-[#7f1d1d] text-center m-[8px] text-[15px] font-semibold">
-            Don’t have an account yet? <br />
+          <p className="text-[#7f1d1d] text-center text-sm font-semibold">
+            Don’t have an account yet?{" "}
             <Link
               to="/register"
-              className="text-[#be123c] hover:text-[#fb7185] cursor-pointer"
+              className="text-[#be123c] hover:text-[#fb7185] underline"
             >
               Register now
             </Link>
