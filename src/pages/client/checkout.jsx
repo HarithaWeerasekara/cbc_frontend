@@ -38,9 +38,12 @@ export default function Checkout() {
   const placeOrder = () => {
     const token = localStorage.getItem("token");
 
+    
     if (!token) {
       alert("Please login to place an order");
+      navigate("/login");
       return;
+      
     }
 
     const orderData = {
