@@ -17,7 +17,10 @@ export default function UserData() {
                     },
                 })
                 .then((response) => {
-                    setUser(response.data.user);
+                console.log("User data:", response.data.user); // Debug log
+                setUser(response.data.user);
+
+
                 })
                 .catch((e) => {
                     console.log(e);
@@ -39,7 +42,7 @@ export default function UserData() {
 
         ) : (
             
-            <div className="h-full flex justify-center items-center flex-row">
+            <div className="h-full flex justify-center items-center flex-row ">
                 <button
                     className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
                     onClick={() => {
