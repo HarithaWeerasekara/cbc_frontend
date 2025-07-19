@@ -40,15 +40,15 @@ export default function UserData() {
         ) : (
             
             <div className="h-full flex justify-center items-center flex-row">
-                <button className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600" onClick={() => {
-                    localStorage.removeItem("token");
-                    setUser(null);
-                    window.location.href = "/login";
-
-                }}>
-
+                <button
+                    className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+                    onClick={() => {
+                        localStorage.removeItem("token");
+                        setUser(null);
+                        window.location.assign("/login");
+                    }}
+                >
                     Logout
-
                 </button>
             </div>
         )
