@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function UserData() {
-
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(() => localStorage.getItem("token"));
 
@@ -17,15 +16,11 @@ export default function UserData() {
                     },
                 })
                 .then((response) => {
-                console.log( response.data); // See the structure
-                setUser(response.data.user); // This line fails if user is not nested
-
-
-
-
+                    console.log("User response:", response.data); // Check structure
+                    setUser(response.data); // 👈 Corrected here
                 })
                 .catch((e) => {
-                    console.log(e);
+                    console.log("Error:", e);
                     setUser(null);
                 });
         } else {
@@ -33,37 +28,28 @@ export default function UserData() {
         }
     }, [token]);
 
-
     return (
-    <>
-       {user == null ? (
-            <div className="h-full flex justify-center items-center flex-row">
-                <Link to="/login" className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Login</Link>
-                <Link to="/register" className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 ml-4">Register</Link>
-            </div>
-
-        ) : (
-            
-            <div className="h-full flex justify-center items-center flex-row ">
-                <button
-                    className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-                    onClick={() => {
-                        localStorage.removeItem("token");
-                        setUser(null);
-                        setToken(null);
-                        window.location.assign("/login");
-                    }}
-                >
-                    Logout
-                </button>
-            </div>
-        )
-        }
-
-    </>
-
+        <>
+            {user == null ? (
+                <div className="h-full flex justify-center items-center flex-row">
+                    <Link to="/login" className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Login</Link>
+                    <Link to="/register" className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 ml-4">Register</Link>
+                </div>
+            ) : (
+                <div className="h-full flex justify-center items-center flex-row ">
+                    <button
+                        className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+                        onClick={() => {
+                            localStorage.removeItem("token");
+                            setUser(null);
+                            setToken(null);
+                            window.location.assign("/login");
+                        }}
+                    >
+                        Logout
+                    </button>
+                </div>
+            )}
+        </>
     );
-
-
 }
-       
