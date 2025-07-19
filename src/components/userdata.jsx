@@ -3,53 +3,67 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function UserData() {
-    const [user, setUser] = useState(null);
-    const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
 
-    useEffect(() => {
-        const currentToken = localStorage.getItem("token");
-        if (currentToken != null) {
-            axios
-                .get(import.meta.env.VITE_API_URL + "/user", {
-                    headers: {
-                        Authorization: `Bearer ${currentToken}`,
-                    },
-                })
-                .then((response) => {
-                    console.log("User response:", response.data); // Check structure
-                    setUser(response.data); // 👈 Corrected here
-                })
-                .catch((e) => {
-                    console.log("Error:", e);
-                    setUser(null);
-                });
-        } else {
-            setUser(null);
-        }
-    }, [token]);
+  useEffect(() => {
+    const currentToken = localStorage.getItem("token");
+    if (currentToken) {
+      axios
+        .get(import.meta.env.VITE_API_URL + "/user", {
+          headers: {
+            Authorization: `Bearer ${currentToken}`,
+          },
+        })
+        .then((response) => {
+          console.log("User response:", response.data);
+          setUser(response.data);
+        })
+        .catch((err) => {
+          console.error("User fetch failed:", err);
+          setUser(null);
+        });
+    }
+  }, [token]);
 
-    return (
+  const buttonStyle =
+    "px-4 py-2 rounded-full font-medium transition-all duration-300 shadow hover:shadow-md";
+
+  return (
+    <div className="flex gap-4 items-center justify-center text-sm sm:text-base">
+      {user == null ? (
         <>
-            {user == null ? (
-                <div className="h-full flex justify-center items-center flex-row">
-                    <Link to="/login" className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Login</Link>
-                    <Link to="/register" className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 ml-4">Register</Link>
-                </div>
-            ) : (
-                <div className="h-full flex justify-center items-center flex-row ">
-                    <button
-                        className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-                        onClick={() => {
-                            localStorage.removeItem("token");
-                            setUser(null);
-                            setToken(null);
-                            window.location.assign("/login");
-                        }}
-                    >
-                        Logout
-                    </button>
-                </div>
-            )}
+          <Link
+            to="/login"
+            className={`${buttonStyle} bg-gradient-to-r from-[#7E3754] to-[#521B41] text-white hover:brightness-110`}
+          >
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className={`${buttonStyle} border border-[#7E3754] text-[#7E3754] hover:bg-[#7E3754] hover:text-white`}
+          >
+            Register
+          </Link>
         </>
-    );
+      ) : (
+        <>
+          <span className="text-[#ECB8CE] font-semibold hidden sm:inline">
+            Hi {user.name || "User"}
+          </span>
+          <button
+            onClick={() => {
+              localStorage.removeItem("token");
+              setUser(null);
+              setToken(null);
+              window.location.assign("/login");
+            }}
+            className={`${buttonStyle} bg-red-100 text-red-600 hover:bg-red-200`}
+          >
+            Logout
+          </button>
+        </>
+      )}
+    </div>
+  );
 }
