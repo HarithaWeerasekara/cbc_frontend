@@ -20,15 +20,15 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full bg-[#E4DFDF] text-[#4A413C]">
-      <div className="max-w-7xl mx-auto px-4 py-4 bg-[#E4DFDF]">
+    <header className="w-full bg-[#EEEDE7D7] text-[#4A413C]">
+      <div className="max-w-7xl mx-auto px-4 py-4 bg-[#EEEDE7D7]">
         {/* Top section */}
         <div className="flex items-center justify-between relative">
           {/* Left: Cart + User */}
           <div className="flex items-center gap-4">
             <Link
               to="/cart"
-              className="text-[#D4A49C] text-2xl hover:text-[#542C3C] transition"
+              className="text-[#462B26] text-2xl hover:text-[#542C3C] transition"
             >
               <GrCart />
             </Link>
