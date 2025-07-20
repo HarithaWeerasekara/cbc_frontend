@@ -1,29 +1,73 @@
+import { useState, useRef, useEffect } from "react";
 import { GrCart } from "react-icons/gr";
+import { FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import UserData from "./userdata";
 
 export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef();
+
+  // Close menu on outside click
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <header className="bg-gradient-to-r shadow-md sticky top-0 z-50">
-      <div className="w-full max-w-7xl mx-auto px-4 py-4 bg-[#EBEFEE]">
-
-         {/* Title - flex-grow to center */}
-          <h1 className="flex-1 text-[#4A413C] text-lg sm:text-2xl font-extrabold tracking-wide text-center">
-            CRYSTEL BEAUTY CLEAR
-          </h1>
-
-        <div className="flex items-center justify-between">
-          {/* Left spacer hidden on mobile */}
-          <div className="w-1/4 hidden md:block" />
-
-         
-
-          {/* Right side - fixed width on mobile */}
-          <div className="flex items-center justify-end ">
-            <Link to="/cart" className="text-[#D4A49C] text-2xl hover:text-[#542C3C] transition px-4">
+    <header className="w-full bg-[#E4DFDF] text-[#4A413C]">
+      <div className="max-w-7xl mx-auto px-4 py-4 bg-[#E4DFDF]">
+        {/* Top section */}
+        <div className="flex items-center justify-between relative">
+          {/* Left: Cart + User */}
+          <div className="flex items-center gap-4">
+            <Link
+              to="/cart"
+              className="text-[#D4A49C] text-2xl hover:text-[#542C3C] transition"
+            >
               <GrCart />
             </Link>
             <UserData />
+          </div>
+
+          {/* Center: Title */}
+          <h1 className="absolute left-1/2 transform -translate-x-1/2 text-lg sm:text-2xl font-extrabold tracking-wide text-[#4A413C] text-center">
+            CRYSTEL BEAUTY CLEAR
+          </h1>
+
+          {/* Right: Login/Register toggle on mobile */}
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="block md:hidden text-[#542C3C] text-2xl"
+            >
+              <FiUser />
+            </button>
+
+            {/* Dropdown menu */}
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded shadow-md z-10">
+                <Link
+                  to="/login"
+                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Register
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 

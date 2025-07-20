@@ -48,6 +48,8 @@ export default function UserData() {
               <FiUserPlus />
               Register
             </Link>
+            
+            
           </div>
 
           {/* Mobile view: icon toggle */}
