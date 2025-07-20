@@ -54,7 +54,7 @@ export default function UserData() {
           <div className="sm:hidden relative">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-[#D4A49C] p-2 rounded-full hover:bg-[#EBEFEE] px-50"
+              className="text-[#D4A49C] p-2 rounded-full hover:bg-[#EBEFEE] px-60"
             >
               <FiLogIn size={22} />
             </button>
