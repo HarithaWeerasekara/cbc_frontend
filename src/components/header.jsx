@@ -4,34 +4,43 @@ import UserData from "./userdata";
 
 export default function Header() {
   return (
-    <header className="bg-gradient-to-r from-[#521B41] to-[#7E3754] shadow-md sticky top-0 z-50">
-      <div className="w-full max-w-7xl mx-auto px-4 py-4">
-        
-        {/* Top bar: title center, cart + user right */}
-        <div className="flex items-center justify-between">
-          {/* Left spacer (empty to help center title) */}
-          <div className="w-1/4 hidden md:block" />
+    <header className="bg-gradient-to-r shadow-md sticky top-0 z-50">
+      <div className="w-full max-w-7xl mx-auto px-4 py-4 bg-[#EBEFEE]">
 
-          {/* Centered Title */}
-          <h1 className="text-[#FDECEF] text-lg sm:text-2xl font-extrabold tracking-wide text-center flex-1">
-            CRYSTEL BEAUTY CLEAR.LK
+         {/* Title - flex-grow to center */}
+          <h1 className="flex-1 text-[#4A413C] text-lg sm:text-2xl font-extrabold tracking-wide text-center">
+            CRYSTEL BEAUTY CLEAR
           </h1>
 
-          {/* Right items: Cart and User */}
-          <div className="flex items-center justify-end gap-4 w-1/4">
-            <Link to="/cart" className="text-[#FADADD] text-2xl hover:text-white transition">
+        <div className="flex items-center justify-between">
+          {/* Left spacer hidden on mobile */}
+          <div className="w-1/4 hidden md:block" />
+
+         
+
+          {/* Right side - fixed width on mobile */}
+          <div className="flex items-center justify-end ">
+            <Link to="/cart" className="text-[#D4A49C] text-2xl hover:text-[#542C3C] transition px-4">
               <GrCart />
             </Link>
             <UserData />
           </div>
         </div>
 
-        {/* Navigation Bar */}
-        <nav className="mt-4 flex flex-wrap justify-center gap-6 text-[#FADADD] text-sm sm:text-base font-medium">
-          <Link to="/" className="hover:text-white transition">Home</Link>
-          <Link to="/products" className="hover:text-white transition">Products</Link>
-          <Link to="/contact" className="hover:text-white transition">Contact</Link>
-          <Link to="/reviews" className="hover:text-white transition">Reviews</Link>
+        {/* Navigation */}
+        <nav className="mt-4 flex flex-wrap justify-center gap-6 text-[#9D6777] text-sm sm:text-base font-medium">
+          <Link to="/" className="hover:text-[#542C3C] transition">
+            Home
+          </Link>
+          <Link to="/products" className="hover:text-[#542C3C] transition">
+            Products
+          </Link>
+          <Link to="/contact" className="hover:text-[#542C3C] transition">
+            Contact
+          </Link>
+          <Link to="/reviews" className="hover:text-[#542C3C] transition">
+            Reviews
+          </Link>
         </nav>
       </div>
     </header>

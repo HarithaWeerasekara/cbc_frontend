@@ -8,7 +8,7 @@ import Footer from "../components/footer";
 
 export default function HomePage() {
   return (
-    <div className="w-full min-h-screen flex flex-col bg-[#ECDCDF] text-[#521B41]">
+    <div className="w-full min-h-screen flex flex-col bg-[#EBEFEE] text-[#4A413C]">
       <Header />
 
       <div className="flex-grow">
@@ -17,14 +17,14 @@ export default function HomePage() {
             path="/"
             element={
               <div className="px-4 py-10 sm:px-6 md:px-12 max-w-6xl mx-auto">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-6 text-[#542C3C]">
                   Welcome to Crystel Beauty Clear
                 </h1>
 
                 <p className="text-base sm:text-lg md:text-xl text-center mb-6">
                   Since 2001, we’ve been delivering natural, effective beauty solutions. With over{" "}
                   <strong>20 branches</strong> across Sri Lanka — from{" "}
-                  <span className="font-medium">
+                  <span className="font-medium text-[#9D6777]">
                     Galle, Anuradhapura, Bandarawela, Ampara, Badulla, Jaffna, Matara, Kurunegala
                   </span>{" "}
                   and more — we bring radiant skin to every region.
@@ -36,14 +36,14 @@ export default function HomePage() {
                   Sri Lanka’s economy 💵.
                 </p>
 
-                <p className="text-base sm:text-lg italic text-center mb-8">
+                <p className="text-base sm:text-lg italic text-center mb-8 text-[#9D6777]">
                   “Our mission is to make every Sri Lankan glow with confidence — naturally and beautifully.”
                 </p>
 
                 <div className="flex justify-center">
                   <a
                     href="/products"
-                    className="bg-[#521B41] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#702659] transition"
+                    className="bg-[#542C3C] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#9D6777] transition"
                   >
                     Shop Our Products
                   </a>
@@ -59,7 +59,7 @@ export default function HomePage() {
           <Route
             path="/*"
             element={
-              <div className="w-full text-center py-20">
+              <div className="w-full text-center py-20 text-[#D4A49C]">
                 <h1 className="text-xl font-bold">404 - Page Not Found</h1>
               </div>
             }
