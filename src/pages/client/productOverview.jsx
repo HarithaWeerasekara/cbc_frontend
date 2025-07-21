@@ -90,7 +90,15 @@ export default function ProductOverview() {
 
         {/* Buttons */}
         <div className="flex justify-center sm:justify-start gap-6">
-          
+          <button
+            className="bg-[#64242F] text-pink-300 px-8 py-3 rounded-lg hover:bg-[#4A1E25] transition duration-300 font-semibold"
+            onClick={async () => {
+              await addToCart(product, 1);
+              toast.success("Product added to cart");
+            }}
+          >
+            Add to Cart
+          </button>
 
           <button
             onClick={() => {

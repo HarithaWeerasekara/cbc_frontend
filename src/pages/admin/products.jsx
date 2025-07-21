@@ -15,102 +15,98 @@ export default function AdminProductsPage() {
     if (!loaded) {
       axios
         .get(`${import.meta.env.VITE_BACKEND_URL}/api/product`)
-        .then((response) => {
-          setProducts(response.data);
+        .then((res) => {
+          setProducts(res.data);
           setLoaded(true);
         })
-        .catch(() => {
-          toast.error("Failed to load products");
-        });
+        .catch(() => toast.error("Failed to load products"));
     }
   }, [loaded]);
 
   async function deleteProduct(id) {
     const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("You are not logged in");
-      return;
-    }
+    if (!token) return toast.error("Login required");
+
     try {
       await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/product/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-      toast.success("Product deleted successfully");
-      setProducts((prev) => prev.filter((product) => product.productId !== id));
-    } catch (error) {
-      console.error(error);
+      setProducts((prev) => prev.filter((p) => p.productId !== id));
+      toast.success("Product deleted");
+    } catch (err) {
       toast.error("Error deleting product");
     }
   }
 
   return (
-    <div className="w-full min-h-screen bg-[#fff1f2] px-4 py-6 relative">
+    <div className="min-h-screen w-full bg-[#fff1f2] p-4 relative">
       {/* Floating Add Button */}
       <Link
         to="/admin/addProducts"
-        className="bg-[#be123c] hover:bg-[#9f1239] text-white p-4 fixed bottom-4 right-4 rounded-full shadow-lg z-10 transition"
+        className="fixed bottom-4 right-4 z-20 bg-[#be123c] hover:bg-[#9f1239] text-white p-4 rounded-full shadow-lg transition"
         title="Add Product"
       >
         <FaPlus />
       </Link>
 
+      <h1 className="text-2xl font-bold text-[#be123c] mb-6">Manage Products</h1>
+
       {loaded ? (
-        <div className="w-full overflow-x-auto">
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product) => (
-              <div
-                key={product.productId}
-                className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-all flex flex-col justify-between"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  {product.images?.length > 0 ? (
-                    <img
-                      src={product.images[0]}
-                      alt="Thumbnail"
-                      className="w-16 h-16 object-cover rounded shadow"
-                    />
-                  ) : (
-                    <span className="text-xs text-gray-500">No Image</span>
-                  )}
-                  <div>
-                    <p className="font-semibold text-sm text-[#7f1d1d]">
-                      {product.name}
-                    </p>
-                    <p className="text-xs text-gray-500">ID: {product.productId}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {products.map((product) => (
+            <div
+              key={product.productId}
+              className="bg-white rounded-2xl shadow p-4 flex flex-col justify-between transition hover:shadow-lg"
+            >
+              {/* Image + Info */}
+              <div className="flex items-center gap-4 mb-4">
+                {product.images?.[0] ? (
+                  <img
+                    src={product.images[0]}
+                    alt={product.name}
+                    className="w-16 h-16 object-cover rounded shadow"
+                  />
+                ) : (
+                  <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded text-xs text-gray-400">
+                    No Image
                   </div>
-                </div>
-
-                <div className="text-sm text-gray-700 space-y-1">
-                  <p>
-                    Price: <span className="text-[#dc2626]">Rs {product.price.toFixed(2)}</span>
-                  </p>
-                  <p>
-                    Labeled: <span className="line-through">Rs {product.labeledPrice.toFixed(2)}</span>
-                  </p>
-                  <p>Stock: {product.stock}</p>
-                </div>
-
-                <div className="mt-4 flex items-center justify-between">
-                  <button
-                    onClick={() => deleteProduct(product.productId)}
-                    className="text-[#dc2626] hover:text-[#991b1b] text-xl"
-                    title="Delete"
-                  >
-                    <FaRegTrashAlt />
-                  </button>
-                  <button
-                    onClick={() => navigate("/admin/editProduct", { state: product })}
-                    className="text-[#2563eb] hover:text-[#1d4ed8] text-xl"
-                    title="Edit"
-                  >
-                    <GrEdit />
-                  </button>
+                )}
+                <div>
+                  <h2 className="font-semibold text-[#7f1d1d] text-sm">{product.name}</h2>
+                  <p className="text-xs text-gray-400">ID: {product.productId}</p>
                 </div>
               </div>
-            ))}
-          </div>
+
+              {/* Price + Stock */}
+              <div className="text-sm text-gray-700 space-y-1 mb-3">
+                <p>
+                  Price: <span className="text-[#dc2626]">Rs {product.price.toFixed(2)}</span>
+                </p>
+                <p>
+                  Labeled: <span className="line-through">Rs {product.labeledPrice.toFixed(2)}</span>
+                </p>
+                <p>Stock: <span className="font-medium">{product.stock}</span></p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-between items-center mt-auto pt-2 border-t">
+                <button
+                  onClick={() => deleteProduct(product.productId)}
+                  className="text-[#dc2626] hover:text-[#991b1b] text-lg"
+                  title="Delete"
+                >
+                  <FaRegTrashAlt />
+                </button>
+                <button
+                  onClick={() => navigate("/admin/editProduct", { state: product })}
+                  className="text-[#2563eb] hover:text-[#1d4ed8] text-lg"
+                  title="Edit"
+                >
+                  <GrEdit />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
         <Loader />
