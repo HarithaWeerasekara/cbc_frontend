@@ -1,3 +1,4 @@
+import Footer from "../components/footer";
 import Header from "../components/header";
 
 export default function ReviewsPage() {
@@ -57,7 +58,9 @@ export default function ReviewsPage() {
         </div>
       </div>
     </div>
+      <Footer />
     </div>
+    
     
   );
 }
