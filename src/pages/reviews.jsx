@@ -36,31 +36,31 @@ export default function ReviewsPage() {
   ];
 
   return (
-    <div>
-      <Header className=" " />
-     
-    <div className="min-h-screen bg-[#ECDCDF] py-10 px-4 text-[#521B41]">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-8">
-          What Our Customers Say
-        </h2>
+    <div className="flex flex-col min-h-screen bg-[#ECDCDF]">
+      <Header />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {reviews.map((review, index) => (
-            <div
-              key={index}
-              className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition"
-            >
-              <p className="text-lg font-semibold mb-2">{review.name}</p>
-              <p className="text-sm text-gray-700">{review.feedback}</p>
-            </div>
-          ))}
+      {/* Main content */}
+      <div className="flex-grow py-10 px-4 text-[#521B41]">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            What Our Customers Say
+          </h2>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {reviews.map((review, index) => (
+              <div
+                key={index}
+                className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition"
+              >
+                <p className="text-lg font-semibold mb-2">{review.name}</p>
+                <p className="text-sm text-gray-700">{review.feedback}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+
       <Footer />
     </div>
-    
-    
   );
 }
