@@ -8,10 +8,16 @@ import Footer from "../components/footer";
 
 export default function HomePage() {
   return (
-    <div className="w-full min-h-screen flex flex-col bg-[#FAE1E1] text-[#4A413C]">
+    <div
+      className="w-full min-h-screen flex flex-col text-[#4A413C] bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage:
+          "url('https://i.pinimg.com/1200x/63/4e/d5/634ed52c8a9c9dfcee81f451bcc8ec0c.jpg')",
+      }}
+    >
       <Header />
 
-      <div className="flex-grow">
+      <div className="flex-grow bg-white/80">
         <Routes>
           <Route
             path="/"

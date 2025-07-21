@@ -21,7 +21,7 @@ export default function Header() {
 
   return (
     <header className="w-full bg-[#EEEDE7D7] text-[#4A413C]">
-      <div className="max-w-7xl mx-auto px-4 py-4 bg-[#EEEDE7D7]">
+      <div className="max-w-7xl mx-auto px-4 py-4 bg-[#EEEDE7D7] relative">
         {/* Top section */}
         <div className="flex items-center justify-between relative">
           {/* Left: Cart */}
@@ -35,7 +35,7 @@ export default function Header() {
           </div>
 
           {/* Center: Title */}
-          <h1 className="absolute left-1/2 transform -translate-x-1/2 text-lg sm:text-2xl font-extrabold tracking-wide text-[#4A413C] text-center">
+          <h1 className="absolute left-1/2 transform -translate-x-1/2 text-lg sm:text-2xl font-extrabold tracking-wide text-[#4A413C] text-center select-none">
             CRYSTEL BEAUTY CLEAR
           </h1>
 
@@ -50,7 +50,8 @@ export default function Header() {
             <div className="relative md:hidden" ref={menuRef}>
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="text-[#542C3C] text-2xl"
+                className="text-[#542C3C] text-2xl focus:outline-none"
+                aria-label="User menu"
               >
                 <FiUser />
               </button>
@@ -78,7 +79,7 @@ export default function Header() {
         </div>
 
         {/* Navigation */}
-        <nav className="mt-4 flex flex-wrap justify-center gap-6 text-[#9D6777] text-sm sm:text-base font-medium">
+        <nav className="mt-4 flex flex-wrap justify-center gap-6 text-[#9D6777] text-sm sm:text-base font-medium select-none">
           <Link to="/" className="hover:text-[#542C3C] transition">
             Home
           </Link>
