@@ -1,4 +1,4 @@
-/* Hide scrollbar */
+/* Add this to your index.css or tailwind config if not already added */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -6,5 +6,3 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
-
