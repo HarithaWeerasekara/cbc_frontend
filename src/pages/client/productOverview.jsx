@@ -50,14 +50,20 @@ export default function ProductOverview() {
 
   return (
     <div className="w-full min-h-screen bg-[#F7F7F7] flex flex-col sm:flex-row">
-      {/* Image Slider */}
-      <div className="sm:w-1/2 p-6 flex justify-center items-center">
+      {/* Image Slider Section */}
+      <div className="sm:w-1/2 p-6 flex flex-col justify-center items-center">
+        {/* Mobile Title */}
+        <h1 className="block sm:hidden text-2xl font-bold text-[#3D1F25] text-center mb-4">
+          {product.name || "Unnamed Product"}
+        </h1>
+
         <ImageSlider images={product.images || []} />
       </div>
 
-      {/* Product Details */}
+      {/* Product Details Section */}
       <div className="sm:w-1/2 p-8 flex flex-col justify-center text-center sm:text-left">
-        <h1 className="text-4xl font-extrabold mb-6 text-[#3D1F25]">
+        {/* Desktop Title */}
+        <h1 className="hidden sm:block text-4xl font-extrabold mb-6 text-[#3D1F25]">
           {product.name || "Unnamed Product"}
         </h1>
 

@@ -32,7 +32,7 @@ export default function Header() {
             >
               <GrCart />
             </Link>
-            <UserData />
+            
           </div>
 
           {/* Center: Title */}
