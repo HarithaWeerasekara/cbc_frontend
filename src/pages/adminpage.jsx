@@ -1,75 +1,99 @@
+import { useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import { FaBroadcastTower, FaUsers, FaFileInvoiceDollar } from "react-icons/fa";
 import { AiFillProduct } from "react-icons/ai";
+import { FiMenu } from "react-icons/fi";
 import AdminProductsPage from "./admin/products";
 import AddProductionForm from "./addProductForm";
 import EditProductionForm from "./admin/editProductForm";
 import AdminOrders from "./admin/adminOrders";
 
 export default function AdminPage() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const navLinks = [
+    { path: "/admin/users", label: "Users", icon: <FaUsers /> },
+    { path: "/admin/products", label: "Products", icon: <AiFillProduct /> },
+    { path: "/admin/orders", label: "Orders", icon: <FaFileInvoiceDollar /> },
+    {
+      path: "/admin/live-products",
+      label: "Live Products",
+      icon: <FaBroadcastTower />,
+    },
+  ];
+
   return (
-    <div className="w-full h-screen bg-[#fef2f2] flex p-4 font-sans">
+    <div className="flex h-screen bg-[#fef2f2] overflow-hidden">
       {/* Sidebar */}
-      <div className="h-full w-[280px] bg-gradient-to-b from-[#be123c] to-[#881337] rounded-2xl text-white p-4 space-y-3 shadow-xl">
-        <div>
+      <aside
+        className={`fixed md:static top-0 left-0 z-30 w-64 bg-gradient-to-b from-[#be123c] to-[#881337] text-white h-full flex flex-col p-4 transition-transform duration-300 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
+      >
+        {/* Sidebar Header */}
+        <div className="mb-6">
           <a
-            href="http://localhost:5173/"
+            href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="h-[150px] block group text-center text-sm font-medium rounded-xl flex justify-center items-center bg-[#9f1239] hover:bg-[#881337] transition-all duration-300"
+            className="block text-center bg-[#9f1239] hover:bg-[#881337] py-6 px-2 rounded-xl text-sm font-semibold group transition-all duration-300"
           >
             <span className="group-hover:hidden">Crystal Beauty Dashboard</span>
-            <span className="hidden group-hover:flex flex-col items-center text-xs leading-tight">
-              Click to <br /> visit front-end
+            <span className="hidden group-hover:block text-xs leading-tight">
+              Click to visit front-end
             </span>
           </a>
         </div>
 
-        <Link
-          to="/admin/users"
-          className="flex items-center p-3 rounded-xl hover:bg-[#881337] transition text-sm font-semibold tracking-wide"
-        >
-          <FaUsers className="mr-3 text-lg" /> Users
-        </Link>
-
-        <Link
-          to="/admin/products"
-          className="flex items-center p-3 rounded-xl hover:bg-[#881337] transition text-sm font-semibold tracking-wide"
-        >
-          <AiFillProduct className="mr-3 text-lg" /> Products
-        </Link>
-
-        <Link
-          to="/admin/orders"
-          className="flex items-center p-3 rounded-xl hover:bg-[#881337] transition text-sm font-semibold tracking-wide"
-        >
-          <FaFileInvoiceDollar className="mr-3 text-lg" /> Orders
-        </Link>
-
-        <Link
-          to="/admin/live-products"
-          className="flex items-center p-3 rounded-xl hover:bg-[#881337] transition text-sm font-semibold tracking-wide"
-        >
-          <FaBroadcastTower className="mr-3 text-lg" /> Live Products
-        </Link>
-      </div>
+        {/* Sidebar Nav */}
+        <nav className="space-y-3">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className="flex items-center p-3 rounded-xl hover:bg-[#9f1239] transition text-sm font-medium"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <span className="mr-3 text-lg">{link.icon}</span>
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      </aside>
 
       {/* Main Content */}
-      <div className="h-full w-[calc(100vw-300px)] bg-white rounded-2xl shadow-md overflow-auto p-6">
-        <Routes>
-          <Route
-            path="/users"
-            element={
-              <h1 className="text-[#be123c] font-bold text-2xl tracking-wide">
-                Users
-              </h1>
-            }
-          />
-          <Route path="/products" element={<AdminProductsPage />} />
-          <Route path="/orders" element={<AdminOrders />} />
-          <Route path="/addProducts" element={<AddProductionForm />} />
-          <Route path="/editProduct" element={<EditProductionForm />} />
-        </Routes>
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top Bar for Mobile */}
+        <header className="md:hidden flex items-center justify-between bg-white px-4 py-3 shadow-md">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="text-[#881337] text-2xl"
+          >
+            <FiMenu />
+          </button>
+          <h1 className="text-xl font-bold text-[#881337]">
+            Crystal Admin Panel
+          </h1>
+          <div></div>
+        </header>
+
+        {/* Content */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-white rounded-t-3xl md:rounded-none shadow-inner">
+          <Routes>
+            <Route
+              path="/users"
+              element={
+                <h1 className="text-[#be123c] font-bold text-2xl tracking-wide">
+                  Users Management
+                </h1>
+              }
+            />
+            <Route path="/products" element={<AdminProductsPage />} />
+            <Route path="/orders" element={<AdminOrders />} />
+            <Route path="/addProducts" element={<AddProductionForm />} />
+            <Route path="/editProduct" element={<EditProductionForm />} />
+          </Routes>
+        </main>
       </div>
     </div>
   );

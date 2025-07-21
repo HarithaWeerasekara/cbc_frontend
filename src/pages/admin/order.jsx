@@ -31,36 +31,76 @@ export default function Orders() {
   }, []);
 
   if (loading)
-    return <div className="p-4 text-[#be123c] font-semibold">Loading orders...</div>;
+    return (
+      <div className="p-6 text-center text-[#be123c] font-semibold animate-pulse">
+        Loading your orders...
+      </div>
+    );
 
   if (orders.length === 0)
-    return <div className="p-4 text-gray-600">No orders found.</div>;
+    return (
+      <div className="p-6 text-center text-gray-600 font-medium">
+        No orders found.
+      </div>
+    );
 
   return (
-    <div className="p-4 min-h-screen bg-[#fef2f2]">
-      <h1 className="text-2xl font-bold text-[#be123c] mb-6">Your Orders</h1>
-      <div className="space-y-5">
+    <div className="w-full min-h-screen bg-[#fff1f2] p-4 sm:p-6 font-sans">
+      <h1 className="text-3xl sm:text-4xl font-extrabold text-[#be123c] mb-6 text-center">
+        Your Orders
+      </h1>
+
+      <div className="grid gap-6">
         {orders.map((order) => (
           <div
             key={order.orderId}
-            className="bg-white border border-[#fda4af] rounded-xl p-4 shadow-md"
+            className="bg-white border border-[#fda4af] rounded-2xl shadow-sm hover:shadow-md transition-all p-5 sm:p-6 space-y-4"
           >
-            <div className="mb-2 text-sm text-[#7f1d1d] space-y-1">
-              <p><strong>Order ID:</strong> {order.orderId}</p>
-              <p><strong>Email:</strong> {order.email}</p>
-              <p><strong>Address:</strong> {order.address}</p>
-              <p><strong>Phone:</strong> {order.phoneNumber}</p>
-              <p><strong>Total:</strong> LKR {order.total.toFixed(2)}</p>
-              <p><strong>Status:</strong> <span className="text-[#be123c] font-medium">{order.status}</span></p>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+              <div className="space-y-1 text-sm text-gray-700 sm:w-1/2">
+                <p>
+                  <span className="font-semibold text-[#7f1d1d]">Order ID:</span>{" "}
+                  {order.orderId}
+                </p>
+                <p>
+                  <span className="font-semibold text-[#7f1d1d]">Email:</span>{" "}
+                  {order.email}
+                </p>
+                <p>
+                  <span className="font-semibold text-[#7f1d1d]">Phone:</span>{" "}
+                  {order.phoneNumber}
+                </p>
+                <p>
+                  <span className="font-semibold text-[#7f1d1d]">Address:</span>{" "}
+                  {order.address}
+                </p>
+              </div>
+
+              <div className="mt-4 sm:mt-0 text-sm text-gray-700 sm:text-right sm:w-1/2">
+                <p>
+                  <span className="font-semibold text-[#7f1d1d]">Total:</span>{" "}
+                  LKR {order.total.toFixed(2)}
+                </p>
+                <p>
+                  <span className="font-semibold text-[#7f1d1d]">Status:</span>{" "}
+                  <span className="text-[#be123c] font-medium">
+                    {order.status}
+                  </span>
+                </p>
+              </div>
             </div>
 
-            <div className="mt-3">
-              <p className="font-semibold text-[#be123c] mb-1">Items:</p>
-              <ul className="list-disc ml-6 text-gray-700 text-sm space-y-1">
+            <div>
+              <p className="text-[#be123c] font-semibold mb-2 text-sm sm:text-base">
+                Items:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
                 {order.billItem.map((item, index) => (
                   <li key={index}>
-                    {item.productName} × {item.quantity} — LKR{" "}
-                    {(item.price * item.quantity).toFixed(2)}
+                    {item.productName} × {item.quantity} —{" "}
+                    <span className="text-[#7f1d1d]">
+                      LKR {(item.price * item.quantity).toFixed(2)}
+                    </span>
                   </li>
                 ))}
               </ul>

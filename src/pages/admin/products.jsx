@@ -46,7 +46,7 @@ export default function AdminProductsPage() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-[#fff1f2] p-4 relative">
+    <div className="w-full min-h-screen bg-[#fff1f2] px-4 py-6 relative">
       {/* Floating Add Button */}
       <Link
         to="/admin/addProducts"
@@ -58,62 +58,59 @@ export default function AdminProductsPage() {
 
       {loaded ? (
         <div className="w-full overflow-x-auto">
-          <table className="min-w-[900px] w-full bg-white text-sm rounded-lg shadow-md">
-            <thead className="bg-[#FC979D] text-[#7f1d1d]">
-              <tr>
-                <th className="p-3 text-left">Image</th>
-                <th className="p-3 text-left">Product ID</th>
-                <th className="p-3 text-left">Name</th>
-                <th className="p-3 text-right">Price</th>
-                <th className="p-3 text-right">Labeled Price</th>
-                <th className="p-3 text-right">Stock</th>
-                <th className="p-3 text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => (
-                <tr
-                  key={product.productId}
-                  className="border-t hover:bg-[#fff0f3] transition"
-                >
-                  <td className="p-3">
-                    {product.images?.length > 0 ? (
-                      <img
-                        src={product.images[0]}
-                        alt="Thumbnail"
-                        className="w-12 h-12 object-cover rounded shadow"
-                      />
-                    ) : (
-                      <span className="text-xs text-gray-500">No Image</span>
-                    )}
-                  </td>
-                  <td className="p-3">{product.productId}</td>
-                  <td className="p-3">{product.name}</td>
-                  <td className="p-3 text-right">Rs {product.price.toFixed(2)}</td>
-                  <td className="p-3 text-right">Rs {product.labeledPrice.toFixed(2)}</td>
-                  <td className="p-3 text-right">{product.stock}</td>
-                  <td className="p-3 text-center">
-                    <div className="flex justify-center items-center gap-4">
-                      <button
-                        onClick={() => deleteProduct(product.productId)}
-                        className="text-[#dc2626] hover:text-[#991b1b] transition"
-                        title="Delete"
-                      >
-                        <FaRegTrashAlt />
-                      </button>
-                      <button
-                        onClick={() => navigate("/admin/editProduct", { state: product })}
-                        className="text-[#2563eb] hover:text-[#1d4ed8] transition"
-                        title="Edit"
-                      >
-                        <GrEdit />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.map((product) => (
+              <div
+                key={product.productId}
+                className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition-all flex flex-col justify-between"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  {product.images?.length > 0 ? (
+                    <img
+                      src={product.images[0]}
+                      alt="Thumbnail"
+                      className="w-16 h-16 object-cover rounded shadow"
+                    />
+                  ) : (
+                    <span className="text-xs text-gray-500">No Image</span>
+                  )}
+                  <div>
+                    <p className="font-semibold text-sm text-[#7f1d1d]">
+                      {product.name}
+                    </p>
+                    <p className="text-xs text-gray-500">ID: {product.productId}</p>
+                  </div>
+                </div>
+
+                <div className="text-sm text-gray-700 space-y-1">
+                  <p>
+                    Price: <span className="text-[#dc2626]">Rs {product.price.toFixed(2)}</span>
+                  </p>
+                  <p>
+                    Labeled: <span className="line-through">Rs {product.labeledPrice.toFixed(2)}</span>
+                  </p>
+                  <p>Stock: {product.stock}</p>
+                </div>
+
+                <div className="mt-4 flex items-center justify-between">
+                  <button
+                    onClick={() => deleteProduct(product.productId)}
+                    className="text-[#dc2626] hover:text-[#991b1b] text-xl"
+                    title="Delete"
+                  >
+                    <FaRegTrashAlt />
+                  </button>
+                  <button
+                    onClick={() => navigate("/admin/editProduct", { state: product })}
+                    className="text-[#2563eb] hover:text-[#1d4ed8] text-xl"
+                    title="Edit"
+                  >
+                    <GrEdit />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <Loader />

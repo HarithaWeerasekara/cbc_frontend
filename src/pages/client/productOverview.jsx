@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../../components/loader";
 import axios from "axios";
 import ImageSlider from "../../components/imageSlider";
-import { addToCart } from "../../utils/cart";
+
 
 export default function ProductOverview() {
   const params = useParams();
@@ -50,20 +50,14 @@ export default function ProductOverview() {
 
   return (
     <div className="w-full min-h-screen bg-[#F7F7F7] flex flex-col sm:flex-row">
-      {/* Image Slider Section */}
-      <div className="sm:w-1/2 p-6 flex flex-col justify-center items-center">
-        {/* Mobile Title */}
-        <h1 className="block sm:hidden text-2xl font-bold text-[#3D1F25] text-center mb-4">
-          {product.name || "Unnamed Product"}
-        </h1>
-
+      {/* Image Slider */}
+      <div className="sm:w-1/2 p-6 flex justify-center items-center">
         <ImageSlider images={product.images || []} />
       </div>
 
-      {/* Product Details Section */}
+      {/* Product Details */}
       <div className="sm:w-1/2 p-8 flex flex-col justify-center text-center sm:text-left">
-        {/* Desktop Title */}
-        <h1 className="hidden sm:block text-4xl font-extrabold mb-6 text-[#3D1F25]">
+        <h1 className="text-4xl font-extrabold mb-6 text-[#3D1F25]">
           {product.name || "Unnamed Product"}
         </h1>
 
@@ -96,15 +90,7 @@ export default function ProductOverview() {
 
         {/* Buttons */}
         <div className="flex justify-center sm:justify-start gap-6">
-          <button
-            className="bg-[#64242F] text-pink-300 px-8 py-3 rounded-lg hover:bg-[#4A1E25] transition duration-300 font-semibold"
-            onClick={async () => {
-              await addToCart(product, 1);
-              toast.success("Product added to cart");
-            }}
-          >
-            Add to Cart
-          </button>
+          
 
           <button
             onClick={() => {

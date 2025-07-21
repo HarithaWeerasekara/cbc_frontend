@@ -24,7 +24,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 py-4 bg-[#EEEDE7D7]">
         {/* Top section */}
         <div className="flex items-center justify-between relative">
-          {/* Left: Cart + User */}
+          {/* Left: Cart */}
           <div className="flex items-center gap-4">
             <Link
               to="/cart"
@@ -32,7 +32,6 @@ export default function Header() {
             >
               <GrCart />
             </Link>
-            
           </div>
 
           {/* Center: Title */}
@@ -40,34 +39,41 @@ export default function Header() {
             CRYSTEL BEAUTY CLEAR
           </h1>
 
-          {/* Right: Login/Register toggle on mobile */}
-          <div className="relative" ref={menuRef}>
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="block md:hidden text-[#542C3C] text-2xl"
-            >
-              <FiUser />
-            </button>
+          {/* Right: Desktop UserData / Mobile toggle */}
+          <div className="flex items-center gap-4">
+            {/* Show on desktop only */}
+            <div className="hidden md:block">
+              <UserData />
+            </div>
 
-            {/* Dropdown menu */}
-            {menuOpen && (
-              <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded shadow-md z-10">
-                <Link
-                  to="/login"
-                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Register
-                </Link>
-              </div>
-            )}
+            {/* Show icon + dropdown on mobile */}
+            <div className="relative md:hidden" ref={menuRef}>
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="text-[#542C3C] text-2xl"
+              >
+                <FiUser />
+              </button>
+
+              {menuOpen && (
+                <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded shadow-md z-10">
+                  <Link
+                    to="/login"
+                    className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
