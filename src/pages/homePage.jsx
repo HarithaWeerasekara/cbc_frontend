@@ -5,6 +5,7 @@ import ProductOverview from "./client/productOverview";
 import CartPage from "./client/cart";
 import CheckoutPage from "./client/checkout";
 import Footer from "../components/footer";
+import ForgotPassword from "./client/forgetPassword";
 
 export default function HomePage() {
   return (
@@ -62,6 +63,7 @@ export default function HomePage() {
           <Route path="/overview/:id" element={<ProductOverview />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/forget" element={<ForgotPassword/>} />
           <Route
             path="/*"
             element={

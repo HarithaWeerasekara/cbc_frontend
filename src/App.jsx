@@ -14,6 +14,7 @@ import Orders from './pages/admin/order'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import ContactPage from './pages/contactPage'
 import ReviewsPage from './pages/reviews'
+import ForgotPassword from './pages/client/forgetPassword'
 
 function App() {
   
@@ -35,6 +36,7 @@ function App() {
                       <Route path="/orders" element={<Orders />} />
                       <Route path="/contact" element={<ContactPage />} />
                       <Route path="/reviews" element={<ReviewsPage />} />
+                      <Route path="/forget" element={<ForgotPassword />} />
 
 
 

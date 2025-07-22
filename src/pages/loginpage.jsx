@@ -112,6 +112,15 @@ export default function LoginPage() {
               Register now
             </Link>
           </p>
+          {/*foget password*/}
+          <p className="text-[#7f1d1d] text-center text-sm font-semibold mt-2">
+            <Link
+              to="/forget"
+              className="text-[#be123c] hover:text-[#fb7185] underline"
+            >
+              Forget Password?
+            </Link>
+          </p>
         </div>
       </div>
     </div>

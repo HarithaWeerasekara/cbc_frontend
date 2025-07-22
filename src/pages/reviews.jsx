@@ -36,8 +36,8 @@ export default function ReviewsPage() {
   ];
 
   return (
-    <div className="relative flex flex-col min-h-screen text-[#521B41]">
-      {/* Fullscreen blurred background image */}
+    <div className="relative min-h-screen flex flex-col text-[#521B41]">
+      {/* Fullscreen background with blur */}
       <div
         className="fixed inset-0 -z-10 bg-cover bg-center filter blur-sm"
         style={{
@@ -48,20 +48,23 @@ export default function ReviewsPage() {
 
       <Header />
 
-      {/* Content container with no extra background or padding */}
-      <main className="flex-grow py-10 px-4 max-w-5xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-8">
+      <main className="flex-grow w-full max-w-6xl mx-auto px-4 sm:px-6 py-6">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6">
           What Our Customers Say
         </h2>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {reviews.map((review, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition"
+              className="bg-white/80 backdrop-blur-md p-4 sm:p-6 rounded-lg shadow-md transition hover:shadow-lg"
             >
-              <p className="text-lg font-semibold mb-2">{review.name}</p>
-              <p className="text-gray-700 text-sm">{review.feedback}</p>
+              <p className="text-base sm:text-lg font-semibold mb-2">
+                {review.name}
+              </p>
+              <p className="text-sm sm:text-base text-gray-800">
+                {review.feedback}
+              </p>
             </div>
           ))}
         </div>

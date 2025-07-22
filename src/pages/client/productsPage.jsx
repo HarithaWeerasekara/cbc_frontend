@@ -23,7 +23,7 @@ export default function ProductsPage() {
 
   return (
     <div className="relative flex flex-col min-h-screen text-[#521B41]">
-      {/* Fullscreen blurred background image */}
+      {/* Blurred Background */}
       <div
         className="fixed inset-0 -z-10 bg-cover bg-center filter blur-sm"
         style={{
@@ -32,16 +32,15 @@ export default function ProductsPage() {
         }}
       />
 
-      {/* Optional: You can add your Header component here if you have one */}
-      {/* <Header /> */}
-
-      {/* Content container, centered, limited width, minimal padding */}
+      {/* Content */}
       <main className="flex-grow py-10 px-4 max-w-7xl mx-auto w-full">
         {productsLoaded ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {productList.map((product) => (
-              <ProductCard key={product.productId} product={product} />
-            ))}
+          <div className="flex justify-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {productList.map((product) => (
+                <ProductCard key={product.productId} product={product} />
+              ))}
+            </div>
           </div>
         ) : (
           <div className="flex justify-center items-center h-[60vh]">
@@ -49,9 +48,6 @@ export default function ProductsPage() {
           </div>
         )}
       </main>
-
-      {/* Optional: Footer component */}
-      {/* <Footer /> */}
     </div>
   );
 }
