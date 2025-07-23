@@ -70,6 +70,13 @@ export default function ProductsPage() {
         >
           Search
         </button>
+
+        <button className="ml-2 px-4 py-2 bg-[#521B41] text-white rounded-md hover:bg-[#3d0f2a] transition-colors"
+        onClick={()=>{
+          setProductsLoaded(false);
+        }} >
+          Reset
+        </button>
       </div>
 
       {/* Background */}
