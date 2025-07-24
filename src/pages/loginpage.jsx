@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import { FaGoogle } from "react-icons/fa";
+import logo from "../assets/logo.png"; // ✅ Make sure path is correct
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -61,13 +62,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col lg:flex-row bg-[url(/login-bg.jpg)] bg-cover bg-center">
-      
-      {/* Left side (optional visual or background) */}
-      <div className="hidden lg:block lg:w-1/2"></div>
+    <div className="w-full min-h-screen flex flex-col lg:flex-row">
 
-      {/* Right side (login form) */}
-      <div className="w-full lg:w-1/2 flex justify-center items-center p-6">
+      {/* Left Full Side Logo */}
+      <div className="hidden lg:flex lg:w-1/2 h-screen justify-center items-center bg-[#fff7f7]">
+        <img
+          src={logo}
+          alt="Logo"
+          className="max-w-[70%] h-auto object-contain"
+        />
+      </div>
+
+      {/* Right side Login */}
+      <div className="w-full lg:w-1/2 flex justify-center items-center bg-[url(/login-bg.jpg)] bg-cover bg-center p-6">
         <div className="w-full max-w-sm bg-white/30 backdrop-blur-2xl shadow-2xl rounded-2xl px-6 py-8 flex flex-col items-center">
           
           <input
@@ -112,7 +119,7 @@ export default function LoginPage() {
               Register now
             </Link>
           </p>
-          {/*foget password*/}
+
           <p className="text-[#7f1d1d] text-center text-sm font-semibold mt-2">
             <Link
               to="/forget"
