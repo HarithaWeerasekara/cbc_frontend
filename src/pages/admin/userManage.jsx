@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { FiUserX, FiUserCheck } from "react-icons/fi";  // Import icons
-import Loader from "../../components/Loader";
+import Loader from "../../components/loader";
+
 
 export default function UserManagerPage() {
     const [users, setUsers] = useState([]);
