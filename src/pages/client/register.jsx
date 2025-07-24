@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
- // ✅ Ensure the path is correct
 
 
 export default function RegisterPage() {
