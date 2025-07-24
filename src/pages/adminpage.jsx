@@ -7,6 +7,7 @@ import AdminProductsPage from "./admin/products";
 import AddProductionForm from "./addProductForm";
 import EditProductionForm from "./admin/editProductForm";
 import AdminOrders from "./admin/adminOrders";
+import UserManagerPage from "./admin/userManage";
 
 export default function AdminPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -80,14 +81,7 @@ export default function AdminPage() {
         {/* Content */}
         <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-white rounded-t-3xl md:rounded-none shadow-inner">
           <Routes>
-            <Route
-              path="/users"
-              element={
-                <h1 className="text-[#be123c] font-bold text-2xl tracking-wide">
-                  Users Management
-                </h1>
-              }
-            />
+            <Route path="/users" element={<UserManagerPage />} />
             <Route path="/products" element={<AdminProductsPage />} />
             <Route path="/orders" element={<AdminOrders />} />
             <Route path="/addProducts" element={<AddProductionForm />} />

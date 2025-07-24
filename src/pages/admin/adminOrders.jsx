@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Loader from "../../components/loader";
+import Loader from "../../components/Loader";
 import { IoClose } from "react-icons/io5";
 import toast from "react-hot-toast";
 
@@ -54,7 +54,7 @@ export default function AdminOrders() {
       {loaded ? (
         <div className="overflow-x-auto">
           <h1 className="text-xl sm:text-2xl font-bold text-[#be123c] mb-4 text-center">
-            Admin Orders Panel
+            Orders management Panel
           </h1>
           <table className="min-w-full bg-white rounded-xl shadow-lg">
             <thead className="bg-[#fda4af] text-[#7f1d1d] text-sm">
