@@ -70,9 +70,7 @@ export default function AdminPage() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="hidden md:flex inline-flex text-[100px] h-full w-full py-100  items-center justify-center bg-red-200 text-[#881337] font-bold  rounded-t-3xl md:rounded-none shadow-inner ">
-          WELCOME ADMIN
-        </div>
+        
         {/* Top Bar for Mobile */}
         <header className="md:hidden flex items-center justify-between bg-white px-4 py-3 shadow-md">
           <button
