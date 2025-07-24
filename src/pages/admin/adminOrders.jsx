@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Loader from "../../components/Loader";
+import Loader from "../../components/loader";
 import { IoClose } from "react-icons/io5";
 import toast from "react-hot-toast";
 

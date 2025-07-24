@@ -4,7 +4,8 @@ import toast from "react-hot-toast";
 import { FaRegTrashAlt, FaPlus } from "react-icons/fa";
 import { GrEdit } from "react-icons/gr";
 import { Link, useNavigate } from "react-router-dom";
-import Loader from "../../components/Loader";
+import Loader from "../../components/loader";
+
 
 
 export default function AdminProductsPage() {
