@@ -9,6 +9,7 @@ import EditProductionForm from "./admin/editProductForm";
 import AdminOrders from "./admin/adminOrders";
 import UserManagerPage from "./admin/userManage";
 
+
 export default function AdminPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -24,7 +25,11 @@ export default function AdminPage() {
   ];
 
   return (
+
+    
+
     <div className="flex h-screen bg-[#fef2f2] overflow-hidden">
+      
       {/* Sidebar */}
       <aside
         className={`fixed md:static top-0 left-0 z-30 w-64 bg-gradient-to-b from-[#be123c] to-[#881337] text-white h-full flex flex-col p-4 transition-transform duration-300 ${
@@ -45,6 +50,7 @@ export default function AdminPage() {
             </span>
           </a>
         </div>
+        
 
         {/* Sidebar Nav */}
         <nav className="space-y-3">
@@ -64,6 +70,9 @@ export default function AdminPage() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="hidden md:flex inline-flex text-[100px] h-full w-full py-100  items-center justify-center bg-red-200 text-[#881337] font-bold  rounded-t-3xl md:rounded-none shadow-inner ">
+          WELCOME ADMIN
+        </div>
         {/* Top Bar for Mobile */}
         <header className="md:hidden flex items-center justify-between bg-white px-4 py-3 shadow-md">
           <button
