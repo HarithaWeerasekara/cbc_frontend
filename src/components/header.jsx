@@ -6,92 +6,116 @@ import UserData from "./userdata";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef();
+  const menuRef = useRef(null);
 
-  // Close menu on outside click
+  // Close menu on outside click or ESC
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
+    function handleClose(event) {
+      if (
+        (event.type === "mousedown" &&
+          menuRef.current &&
+          !menuRef.current.contains(event.target)) ||
+        (event.type === "keydown" && event.key === "Escape")
+      ) {
         setMenuOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    document.addEventListener("mousedown", handleClose);
+    document.addEventListener("keydown", handleClose);
+    return () => {
+      document.removeEventListener("mousedown", handleClose);
+      document.removeEventListener("keydown", handleClose);
+    };
   }, []);
 
   return (
-    <header className="w-full bg-[#EEEDE7D7] text-[#4A413C]">
-      <div className="max-w-7xl mx-auto px-4 py-4 bg-[#EEEDE7D7] relative">
-        {/* Top section */}
+    <header className="sticky top-0 z-50 bg-[#EEEDE7]/90 backdrop-blur border-b border-[#e4e2dd]">
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        {/* Top bar */}
         <div className="flex items-center justify-between relative">
-          {/* Left: Cart */}
-          <div className="flex items-center gap-4">
-            <Link
-              to="/cart"
-              className="text-[#462B26] text-2xl hover:text-[#542C3C] transition"
-            >
-              <GrCart />
-            </Link>
-          </div>
+          {/* Cart */}
+          <Link
+            to="/cart"
+            aria-label="View cart"
+            className="text-[#462B26] text-2xl hover:text-[#542C3C] transition"
+          >
+            <GrCart />
+          </Link>
 
-          {/* Center: Title */}
-          <h1 className="absolute left-1/2 transform -translate-x-1/2 text-lg sm:text-2xl font-extrabold tracking-wide text-[#4A413C] text-center select-none">
+          {/* Logo */}
+          <Link
+            to="/"
+            className="absolute left-1/2 -translate-x-1/2 text-lg sm:text-2xl 
+                       font-extrabold tracking-wide text-[#4A413C] select-none"
+          >
             CRYSTEL BEAUTY CLEAR
-          </h1>
+          </Link>
 
-          {/* Right: Desktop UserData / Mobile toggle */}
+          {/* User area */}
           <div className="flex items-center gap-4">
-            {/* Show on desktop only */}
+            {/* Desktop */}
             <div className="hidden md:block">
               <UserData />
             </div>
 
-            {/* Show icon + dropdown on mobile */}
+            {/* Mobile */}
             <div className="relative md:hidden" ref={menuRef}>
               <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="text-[#542C3C] text-2xl focus:outline-none"
+                onClick={() => setMenuOpen((v) => !v)}
+                aria-haspopup="true"
+                aria-expanded={menuOpen}
                 aria-label="User menu"
+                className="text-[#542C3C] text-2xl focus:outline-none focus:ring-2 focus:ring-pink-400 rounded"
               >
                 <FiUser />
               </button>
 
-              {menuOpen && (
-                <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded shadow-md z-10">
-                  <Link
-                    to="/login"
-                    className="block px-4 py-2 hover:bg-gray-100 text-sm"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="block px-4 py-2 hover:bg-gray-100 text-sm"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Register
-                  </Link>
-                </div>
-              )}
+              <div
+                className={`absolute right-0 mt-2 w-36 bg-white border border-gray-200 
+                            rounded-xl shadow-lg overflow-hidden transition-all duration-200
+                            ${
+                              menuOpen
+                                ? "opacity-100 scale-100"
+                                : "opacity-0 scale-95 pointer-events-none"
+                            }`}
+              >
+                <Link
+                  to="/login"
+                  className="block px-4 py-2 text-sm hover:bg-gray-100"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="block px-4 py-2 text-sm hover:bg-gray-100"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Register
+                </Link>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="mt-4 flex flex-wrap justify-center gap-6 text-[#9D6777] text-sm sm:text-base font-medium select-none">
-          <Link to="/" className="hover:text-[#542C3C] transition">
-            Home
-          </Link>
-          <Link to="/products" className="hover:text-[#542C3C] transition">
-            Products
-          </Link>
-          <Link to="/contact" className="hover:text-[#542C3C] transition">
-            Contact
-          </Link>
-          <Link to="/reviews" className="hover:text-[#542C3C] transition">
-            Reviews
-          </Link>
+        <nav
+          aria-label="Primary navigation"
+          className="mt-4 flex justify-center gap-6 text-[#9D6777] text-sm sm:text-base font-medium"
+        >
+          {["Home", "Products", "Contact", "Reviews"].map((item) => (
+            <Link
+              key={item}
+              to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+              className="relative hover:text-[#542C3C] transition
+                         after:absolute after:left-0 after:-bottom-1 after:h-[2px] 
+                         after:w-0 after:bg-[#542C3C] after:transition-all
+                         hover:after:w-full"
+            >
+              {item}
+            </Link>
+          ))}
         </nav>
       </div>
     </header>
