@@ -71,96 +71,121 @@ export default function Checkout() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0F0C29] via-[#302B63] to-[#24243E] px-4 py-10 flex justify-center">
-      <div className="w-full max-w-3xl bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl p-6 sm:p-8 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#120c12] via-[#1a1219] to-[#0b070b] px-4 py-16 text-[#f5edf1]">
+      <div className="max-w-4xl mx-auto">
 
-        <h1 className="text-3xl font-bold text-center mb-8 tracking-wide">
-          Checkout
-        </h1>
+        {/* HEADER */}
+        <div className="text-center mb-14">
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-[#f3c6d3] via-[#ffffff] to-[#d7a0b3] bg-clip-text text-transparent">
+            Checkout
+          </h1>
+          <p className="mt-3 text-sm text-white/50">
+            One final step to your glow ✨
+          </p>
+        </div>
 
-        {/* ITEMS */}
-        <div className="space-y-4">
-          {cart.map((item, idx) => (
-            <div
-              key={idx}
-              className="flex items-center justify-between gap-4 bg-white/5 rounded-xl p-4 border border-white/10"
-            >
-              <div className="flex items-center gap-4">
+        {/* CONTENT */}
+        <div className="grid md:grid-cols-5 gap-10">
+
+          {/* LEFT – ITEMS */}
+          <div className="md:col-span-3 space-y-5">
+            {cart.map((item, idx) => (
+              <div
+                key={idx}
+                className="relative group rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-5 flex gap-5 items-center hover:border-white/20 transition"
+              >
+                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition bg-gradient-to-r from-[#7b324620] to-[#b76e8720]" />
+
                 {item.image && (
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-16 h-16 rounded-lg object-cover"
+                    className="relative w-20 h-20 rounded-xl object-cover shadow-lg"
                   />
                 )}
-                <div>
+
+                <div className="relative flex-1">
                   <h2 className="font-semibold">{item.name}</h2>
-                  <p className="text-sm text-white/60">
+                  <p className="text-xs text-white/50 mt-1">
                     Qty: {item.quantity}
                   </p>
                 </div>
+
+                <div className="relative text-right">
+                  <p className="font-semibold">
+                    LKR {(item.price * item.quantity).toFixed(2)}
+                  </p>
+                  {item.labeledPrice > item.price && (
+                    <p className="text-xs line-through text-white/40">
+                      LKR {(item.labeledPrice * item.quantity).toFixed(2)}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* RIGHT – SUMMARY */}
+          <div className="md:col-span-2 space-y-6">
+            <div className="rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 space-y-4">
+              <h3 className="text-lg font-semibold">Order Summary</h3>
+
+              <div className="flex justify-between text-sm text-white/60">
+                <span>Original</span>
+                <span className="line-through">
+                  LKR {labeledTotal.toFixed(2)}
+                </span>
               </div>
 
-              <div className="text-right">
-                <p className="font-semibold text-pink-300">
-                  LKR {(item.price * item.quantity).toFixed(2)}
-                </p>
-                {item.labeledPrice > item.price && (
-                  <p className="text-xs line-through text-white/40">
-                    LKR {(item.labeledPrice * item.quantity).toFixed(2)}
-                  </p>
-                )}
+              <div className="flex justify-between text-sm text-[#f19aa8]">
+                <span>Discount</span>
+                <span>
+                  − LKR {(labeledTotal - total).toFixed(2)}
+                </span>
+              </div>
+
+              <div className="flex justify-between text-xl font-bold border-t border-white/10 pt-4">
+                <span>Total</span>
+                <span className="text-[#8fe1b3]">
+                  LKR {total.toFixed(2)}
+                </span>
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* SUMMARY */}
-        <div className="mt-8 space-y-3 border-t border-white/20 pt-6">
-          <div className="flex justify-between text-white/70">
-            <span>Original Price</span>
-            <span>LKR {labeledTotal.toFixed(2)}</span>
-          </div>
+            {/* USER DETAILS */}
+            <div className="rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 space-y-4">
+              <LuxuryInput label="Full Name" value={name} setValue={setName} />
+              <LuxuryInput label="Address" value={address} setValue={setAddress} />
+              <LuxuryInput label="Phone Number" value={phone} setValue={setPhone} />
+            </div>
 
-          <div className="flex justify-between text-red-400">
-            <span>Discount</span>
-            <span>- LKR {(labeledTotal - total).toFixed(2)}</span>
-          </div>
-
-          <div className="flex justify-between text-xl font-bold text-green-400 border-t border-white/10 pt-3">
-            <span>Total</span>
-            <span>LKR {total.toFixed(2)}</span>
+            {/* CTA */}
+            <button
+              onClick={placeOrder}
+              className="w-full py-5 rounded-full bg-gradient-to-r from-[#7b3246] to-[#b76e87] text-white text-lg font-semibold tracking-wide shadow-[0_20px_60px_rgba(183,110,135,0.35)] hover:scale-[1.04] transition"
+            >
+              Confirm Order →
+            </button>
           </div>
         </div>
-
-        {/* USER DETAILS */}
-        <div className="mt-8 space-y-4">
-          <Input label="Full Name" value={name} setValue={setName} />
-          <Input label="Address" value={address} setValue={setAddress} />
-          <Input label="Phone Number" value={phone} setValue={setPhone} />
-        </div>
-
-        {/* CONFIRM */}
-        <button
-          onClick={placeOrder}
-          className="mt-8 w-full py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-lg font-semibold hover:scale-[1.02] transition-transform shadow-lg"
-        >
-          Confirm Order
-        </button>
       </div>
     </div>
   );
 }
 
-function Input({ label, value, setValue }) {
+/* ================= INPUT ================= */
+
+function LuxuryInput({ label, value, setValue }) {
   return (
     <div>
-      <label className="block mb-1 text-sm text-white/70">{label}</label>
+      <label className="block mb-1 text-xs tracking-wide text-white/60">
+        {label}
+      </label>
       <input
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full h-12 px-4 rounded-lg bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-pink-400"
         placeholder={label}
+        className="w-full h-12 px-4 rounded-xl bg-black/30 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#b76e87] transition"
       />
     </div>
   );
