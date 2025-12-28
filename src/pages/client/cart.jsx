@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { addToCart, getCart, getTotal, getTotalForLabeledPrice, removeFromCart } from "../../utils/cart";
+import {
+  addToCart,
+  getCart,
+  getTotal,
+  getTotalForLabeledPrice,
+  removeFromCart,
+} from "../../utils/cart";
 import { VscTrash } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 
@@ -35,62 +41,84 @@ export default function CartPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] py-6 px-4 flex justify-center">
-      <div className="w-full max-w-3xl bg-[#FFFFFF] rounded-xl shadow-lg p-4 sm:p-6">
-        <h1 className="text-2xl font-bold text-[#222222] mb-4 sm:mb-6">Shopping Cart</h1>
+    <div className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] py-10 px-4 flex justify-center text-white">
+      <div className="w-full max-w-4xl bg-white/95 text-[#2d1b2a] rounded-2xl shadow-2xl p-6 sm:p-8 backdrop-blur">
+
+        {/* Title */}
+        <h1 className="text-3xl font-extrabold mb-6 text-center bg-gradient-to-r from-[#64242F] to-[#9D6777] bg-clip-text text-transparent">
+          Your Shopping Cart
+        </h1>
 
         {cart.length === 0 ? (
-          <div className="text-center text-[#666666] py-10">Your cart is empty.</div>
+          <div className="text-center py-20">
+            <p className="text-lg text-gray-500">🛒 Your cart is empty</p>
+            <button
+              onClick={() => navigate("/products")}
+              className="mt-6 px-10 py-3 rounded-full bg-gradient-to-r from-[#64242F] to-[#9D6777] text-white font-semibold hover:scale-105 transition"
+            >
+              Start Shopping
+            </button>
+          </div>
         ) : (
           <>
-            <div className="space-y-4">
+            {/* CART ITEMS */}
+            <div className="space-y-6">
               {cart.map((item, index) => (
                 <div
                   key={index}
-                  className="flex flex-col sm:flex-row items-center justify-between bg-[#F5F5F5] border border-[#E4E4E4] rounded-xl p-4 sm:p-5 shadow-sm gap-4"
+                  className="group flex flex-col sm:flex-row items-center justify-between gap-6 bg-gradient-to-r from-white to-[#f7eef2] border border-[#eadce3] rounded-2xl p-5 shadow-sm hover:shadow-xl transition"
                 >
-                  <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                  {/* Product */}
+                  <div className="flex items-center gap-5 w-full sm:w-auto">
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-24 h-24 object-cover rounded-lg"
+                      className="w-24 h-24 object-cover rounded-xl shadow-md group-hover:scale-105 transition"
                     />
-                    <div className="text-center sm:text-left">
-                      <h2 className="text-lg font-semibold text-[#222222]">{item.name}</h2>
-                      <p className="text-sm text-[#666666]">{item.altNames.join(", ")}</p>
-                      <p className="text-sm font-medium text-[#333333] mt-1">
+                    <div>
+                      <h2 className="text-lg font-semibold">{item.name}</h2>
+                      <p className="text-sm text-gray-500">
+                        {item.altNames?.join(", ")}
+                      </p>
+                      <p className="text-sm font-medium mt-1">
                         LKR {item.price.toFixed(2)}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-between sm:gap-6 w-full sm:w-auto">
-                    <div className="flex items-center border border-[#E4E4E4] rounded-md mt-3 sm:mt-0">
+                  {/* Actions */}
+                  <div className="flex flex-col sm:flex-row items-center gap-6">
+                    {/* Quantity */}
+                    <div className="flex items-center rounded-full border border-gray-300 overflow-hidden">
                       <button
-                        className="px-3 py-1 bg-[#EDEDED] hover:bg-[#D6D6D6] rounded-l-md text-[#333333]"
+                        className="px-4 py-1 bg-gray-100 hover:bg-gray-200 transition"
                         onClick={() => handleQuantityChange(item, -1)}
                       >
                         −
                       </button>
-                      <span className="px-4 font-medium">{item.quantity}</span>
+                      <span className="px-5 font-semibold">
+                        {item.quantity}
+                      </span>
                       <button
-                        className="px-3 py-1 bg-[#EDEDED] hover:bg-[#D6D6D6] rounded-r-md text-[#333333]"
+                        className="px-4 py-1 bg-gray-100 hover:bg-gray-200 transition"
                         onClick={() => handleQuantityChange(item, 1)}
                       >
                         +
                       </button>
                     </div>
 
-                    <div className="text-sm text-[#666666] mt-2 sm:mt-0">
-                      <p>Subtotal:</p>
-                      <p className="text-base font-semibold text-[#222222]">
+                    {/* Subtotal */}
+                    <div className="text-center sm:text-right">
+                      <p className="text-xs text-gray-500">Subtotal</p>
+                      <p className="font-semibold">
                         LKR {(item.price * item.quantity).toFixed(2)}
                       </p>
                     </div>
 
+                    {/* Remove */}
                     <button
-                      className="text-[#C81E1E] hover:text-red-700 text-xl mt-2 sm:mt-0"
                       onClick={() => handleRemove(item.productId)}
+                      className="text-red-500 hover:text-red-700 text-xl transition"
                       title="Remove"
                     >
                       <VscTrash />
@@ -100,34 +128,40 @@ export default function CartPage() {
               ))}
             </div>
 
-            <div className="border-t border-[#E4E4E4] mt-6 pt-4 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
-              <h2 className="text-xl font-bold text-[#222222] mb-2 sm:mb-0">Total Price</h2>
-              <p className="text-xl font-bold text-[#222222]">LKR {labeledTotal.toFixed(2)}</p>
-            </div>
-            <div className="border-t border-[#E4E4E4] mt-6 pt-4 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
-              <h2 className="text-xl font-bold text-[#222222] mb-2 sm:mb-0">Discount</h2>
-              <p className="text-xl font-bold border-b-[2px] text-[#C81E1E]">
-                - LKR {(labeledTotal - total).toFixed(2)}
-              </p>
-            </div>
-            <div className="border-t border-[#E4E4E4] mt-6 pt-4 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
-              <h2 className="text-xl font-bold text-[#222222] mb-2 sm:mb-0">Discounted Total Price</h2>
-              <p className="text-xl font-bold border-double border-b-[4px] text-[#1E8C3A]">
-                LKR {total.toFixed(2)}
-              </p>
+            {/* SUMMARY */}
+            <div className="mt-10 space-y-4">
+              <div className="flex justify-between text-lg">
+                <span>Original Price</span>
+                <span className="line-through text-gray-400">
+                  LKR {labeledTotal.toFixed(2)}
+                </span>
+              </div>
+
+              <div className="flex justify-between text-lg">
+                <span>Discount</span>
+                <span className="text-red-600">
+                  − LKR {(labeledTotal - total).toFixed(2)}
+                </span>
+              </div>
+
+              <div className="flex justify-between text-2xl font-bold border-t pt-4">
+                <span>Total</span>
+                <span className="text-green-600">
+                  LKR {total.toFixed(2)}
+                </span>
+              </div>
             </div>
 
+            {/* CHECKOUT */}
             <button
-              className="w-full mt-4 py-3 rounded-lg bg-[#5E2B45] text-white text-lg font-semibold hover:bg-[#7D3F65] transition duration-300"
+              className="w-full mt-8 py-4 rounded-full bg-gradient-to-r from-[#64242F] to-[#9D6777] text-white text-lg font-semibold shadow-lg hover:scale-[1.03] hover:shadow-2xl transition"
               onClick={() =>
                 navigate("/checkout", {
-                  state: {
-                    items: cart,
-                  },
+                  state: { items: cart },
                 })
               }
             >
-              Proceed to Checkout
+              Proceed to Checkout →
             </button>
           </>
         )}
