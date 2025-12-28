@@ -1,101 +1,130 @@
 import { Route, Routes, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import Header from "../components/header";
+import Footer from "../components/footer";
 import ProductsPage from "./client/productsPage";
 import ProductOverview from "./client/productOverview";
 import CartPage from "./client/cart";
 import CheckoutPage from "./client/checkout";
-import Footer from "../components/footer";
 import ForgotPassword from "./client/forgetPassword";
+import ProductCard from "../components/product-card";
+import Loader from "../components/loader";
 
 export default function HomePage() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  /* ================= LOAD PRODUCTS FOR HOME ================= */
+  useEffect(() => {
+    axios
+      .get(import.meta.env.VITE_BACKEND_URL + "/api/product/")
+      .then((res) => {
+        const data = Array.isArray(res.data) ? res.data : res.data.products;
+        setProducts(data || []);
+      })
+      .catch(() => setProducts([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const trending = products.slice(0, 4);
+  const discounted = products.slice(-4);
+
   return (
-    <div
-      className="min-h-screen flex flex-col text-[#4A413C] bg-fixed bg-cover bg-center"
-      style={{
-        backgroundImage:
-          "url('https://i.pinimg.com/1200x/63/4e/d5/634ed52c8a9c9dfcee81f451bcc8ec0c.jpg')",
-      }}
-    >
+    <div className="min-h-screen flex flex-col text-[#4A413C] bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e]">
       <Header />
 
-      {/* Soft overlay for eye comfort */}
-      <main className="flex-grow bg-white/85 backdrop-blur-sm">
+      <main className="flex-grow">
         <Routes>
           {/* ================= HOME ================= */}
           <Route
             path="/"
             element={
-              <section className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10 py-16">
-                {/* Hero */}
-                <div className="text-center mb-14">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#542C3C] leading-tight">
-                    Naturally Beautiful. <br className="hidden sm:block" />
-                    Scientifically Trusted.
-                  </h1>
+              <>
+                {/* ================= HERO ================= */}
+                <section className="relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#000000cc] via-[#3b1d3fbb] to-[#000000cc]" />
+                  <div className="relative max-w-7xl mx-auto px-6 py-28 text-center text-white">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight">
+                      Beauty, Re-Engineered
+                    </h1>
 
-                  <p className="mt-6 text-base sm:text-lg md:text-xl text-[#4A413C]/90 max-w-3xl mx-auto">
-                    Since <strong>2001</strong>, Crystel Beauty Clear has been delivering
-                    safe, effective, and natural beauty solutions trusted across Sri Lanka
-                    and beyond.
-                  </p>
-                </div>
-
-                {/* Trust stats */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center mb-14">
-                  <div className="bg-white/90 rounded-2xl p-6 shadow-sm">
-                    <h3 className="text-3xl font-bold text-[#542C3C]">20+</h3>
-                    <p className="mt-2 text-sm text-[#9D6777]">
-                      Branches Nationwide
+                    <p className="mt-6 max-w-3xl mx-auto text-lg sm:text-xl text-white/80">
+                      Trusted since <strong>2001</strong>.  
+                      Natural science, global ingredients, confident results.
                     </p>
+
+                    <div className="mt-10 flex justify-center gap-4">
+                      <Link
+                        to="/products"
+                        className="px-8 py-4 rounded-full bg-gradient-to-r from-[#ff4ecd] to-[#6c63ff] font-semibold shadow-xl hover:scale-105 transition"
+                      >
+                        Shop Now
+                      </Link>
+
+                      <Link
+                        to="/contact"
+                        className="px-8 py-4 rounded-full border border-white/30 hover:bg-white/10 transition"
+                      >
+                        Learn More
+                      </Link>
+                    </div>
                   </div>
+                </section>
 
-                  <div className="bg-white/90 rounded-2xl p-6 shadow-sm">
-                    <h3 className="text-3xl font-bold text-[#542C3C]">4+</h3>
-                    <p className="mt-2 text-sm text-[#9D6777]">
-                      Countries Supplying Ingredients
-                    </p>
+                {/* ================= CONTENT ================= */}
+                <section className="bg-gradient-to-b from-[#fdfbff] to-[#f3e8ff] text-[#4A413C]">
+                  <div className="max-w-7xl mx-auto px-4 py-20 space-y-20">
+
+                    {/* ===== TRENDING ===== */}
+                    <div>
+                      <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#542C3C]">
+                        🔥 Trending Products
+                      </h2>
+
+                      {loading ? (
+                        <div className="flex justify-center mt-10">
+                          <Loader />
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-10">
+                          {trending.map((p) => (
+                            <ProductCard key={p.productId} product={p} />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* ===== DISCOUNT ===== */}
+                    <div>
+                      <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#542C3C]">
+                        💸 Big Discounts
+                      </h2>
+
+                      <p className="text-center text-sm text-[#9D6777] mt-2">
+                        Limited-time offers you shouldn’t miss
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-10">
+                        {discounted.map((p) => (
+                          <ProductCard key={p.productId} product={p} />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* ===== ALL PRODUCTS CTA ===== */}
+                    <div className="text-center pt-10">
+                      <Link
+                        to="/products"
+                        className="inline-block px-10 py-4 rounded-full bg-gradient-to-r from-[#542C3C] to-[#9D6777] text-white font-semibold shadow-lg hover:scale-105 transition"
+                      >
+                        View All Products →
+                      </Link>
+                    </div>
                   </div>
-
-                  <div className="bg-white/90 rounded-2xl p-6 shadow-sm">
-                    <h3 className="text-3xl font-bold text-[#542C3C]">Global</h3>
-                    <p className="mt-2 text-sm text-[#9D6777]">
-                      Exported Worldwide
-                    </p>
-                  </div>
-                </div>
-
-                {/* Description */}
-                <div className="max-w-4xl mx-auto text-center space-y-6 mb-14">
-                  <p className="text-base sm:text-lg">
-                    Our ingredients are carefully sourced from{" "}
-                    <strong>Japan, France, Thailand, and Korea</strong> — combining
-                    global science with local expertise.
-                  </p>
-
-                  <p className="text-base sm:text-lg">
-                    With branches in{" "}
-                    <span className="font-medium text-[#9D6777]">
-                      Galle, Jaffna, Kurunegala, Badulla, Ampara, Matara
-                    </span>{" "}
-                    and more, we proudly serve every corner of Sri Lanka.
-                  </p>
-
-                  <p className="italic text-[#9D6777]">
-                    “Our mission is to help every individual glow with confidence —
-                    naturally and responsibly.”
-                  </p>
-                </div>
-
-                {/* CTA */}
-                <div className="flex justify-center">
-                  <Link
-                    to="/products"
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-[#542C3C] to-[#9D6777] text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:scale-105 hover:brightness-110 transition-all"
-                  >
-                    Explore Our Products
-                  </Link>
-                </div>
-              </section>
+                </section>
+              </>
             }
           />
 
@@ -110,9 +139,9 @@ export default function HomePage() {
           <Route
             path="/*"
             element={
-              <div className="py-24 text-center text-[#9D6777]">
-                <h1 className="text-2xl font-bold">404</h1>
-                <p className="mt-2">Page not found</p>
+              <div className="py-24 text-center text-white">
+                <h1 className="text-3xl font-bold">404</h1>
+                <p className="mt-2 text-white/70">Page not found</p>
               </div>
             }
           />
