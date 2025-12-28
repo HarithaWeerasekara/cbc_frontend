@@ -47,18 +47,10 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="relative min-h-screen text-[#4A413C]">
-      {/* ================= BACKGROUND ================= */}
-      <div
-        className="fixed inset-0 -z-10 bg-cover bg-center blur-sm"
-        style={{
-          backgroundImage:
-            "url('https://i.pinimg.com/1200x/63/4e/d5/634ed52c8a9c9dfcee81f451bcc8ec0c.jpg')",
-        }}
-      />
-
+    <div className="min-h-screen text-[#4A413C] bg-gradient-to-br from-[#fdfbff] via-[#f6e9f3] to-[#eef2ff]">
+      
       {/* ================= SEARCH BAR ================= */}
-      <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+      <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-3 flex justify-center">
           <div className="flex items-center gap-2 w-full max-w-xl">
             <input
@@ -72,7 +64,7 @@ export default function ProductsPage() {
 
             <button
               onClick={searchProducts}
-              className="px-4 py-2 rounded-full bg-[#542C3C] text-white text-sm font-medium hover:bg-[#9D6777] transition"
+              className="px-4 py-2 rounded-full bg-gradient-to-r from-[#9D6777] to-[#542C3C] text-white text-sm font-medium hover:brightness-110 transition"
             >
               Search
             </button>
@@ -99,7 +91,7 @@ export default function ProductsPage() {
         ) : productList.length === 0 ? (
           <div className="text-center py-20 text-gray-500">
             <p className="text-lg font-medium">No products found</p>
-            <p className="text-sm mt-2">Try a different keyword</p>
+            <p className="text-sm mt-2">Try another keyword ✨</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
