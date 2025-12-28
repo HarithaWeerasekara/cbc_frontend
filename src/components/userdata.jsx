@@ -1,82 +1,84 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiLogIn, FiLogOut, FiUserPlus, FiUser } from "react-icons/fi";
 
 export default function UserData() {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const currentToken = localStorage.getItem("token");
-    if (currentToken) {
-      axios
-        .get(import.meta.env.VITE_API_URL + "/user", {
-          headers: {
-            Authorization: `Bearer ${currentToken}`,
-          },
-        })
-        .then((response) => setUser(response.data))
-        .catch((err) => {
-          console.error("User fetch failed:", err);
-          setUser(null);
-        });
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setLoading(false);
+      return;
     }
-  }, [token]);
 
-  const buttonStyle =
-    "px-2 py-2 rounded-full font-medium transition-all duration-300 shadow hover:shadow-md flex items-center gap-2 text-sm sm:text-base";
+    const controller = new AbortController();
 
-  const fullButtonStyle =
-    "bg-gradient-to-r from-[#9D6777] to-[#542C3C] text-white hover:brightness-110 px-5 m-1";
+    axios
+      .get(import.meta.env.VITE_API_URL + "/user", {
+        headers: { Authorization: `Bearer ${token}` },
+        signal: controller.signal,
+      })
+      .then((res) => setUser(res.data))
+      .catch(() => {
+        localStorage.removeItem("token");
+        setUser(null);
+      })
+      .finally(() => setLoading(false));
 
-  const outlineStyle =
-    "bg-gradient-to-r from-[#9D6777] to-[#542C3C] text-white hover:brightness-110 ";
+    return () => controller.abort();
+  }, []);
+
+  const baseBtn =
+    "px-4 py-2 rounded-full flex items-center gap-2 text-sm font-medium transition-all shadow hover:shadow-md";
+
+  const primaryBtn =
+    "bg-gradient-to-r from-[#9D6777] to-[#542C3C] text-white hover:brightness-110";
+
+  if (loading) return null; // prevents UI flicker
 
   return (
-    <div className="flex justify-center items-center">
-      {user == null ? (
+    <div className="flex items-center">
+      {!user ? (
         <>
-          {/* Desktop view: show both */}
-          <div className="hidden sm:flex gap-3 items-center">
-            <Link to="/login" className={`${buttonStyle} ${fullButtonStyle}`}>
-              <FiLogIn />
-              Login
+          {/* Desktop */}
+          <div className="hidden sm:flex gap-3">
+            <Link to="/login" className={`${baseBtn} ${primaryBtn}`}>
+              <FiLogIn /> Login
             </Link>
-            <Link to="/register" className={`${buttonStyle} ${outlineStyle}`}>
-              <FiUserPlus />
-              Register
+            <Link to="/register" className={`${baseBtn} ${primaryBtn}`}>
+              <FiUserPlus /> Register
             </Link>
-            
-            
           </div>
 
-          {/* Mobile view: icon toggle */}
+          {/* Mobile */}
           <div className="sm:hidden relative">
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-[#D4A49C] p-2 rounded-full hover:bg-[#EBEFEE] px-30"
+              aria-label="User menu"
+              onClick={() => setMobileMenuOpen((v) => !v)}
+              className="p-2 rounded-full hover:bg-white/10"
             >
               <FiLogIn size={22} />
             </button>
 
             {mobileMenuOpen && (
-              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-3 flex flex-col gap-2 z-50">
+              <div className="absolute right-0 mt-2 bg-white rounded-xl shadow-lg p-3 w-40 z-50">
                 <Link
                   to="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`${buttonStyle} ${fullButtonStyle} w-full justify-center`}
+                  className={`${baseBtn} ${primaryBtn} w-full justify-center mb-2`}
                 >
-                  <FiLogIn />
                   Login
                 </Link>
                 <Link
                   to="/register"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`${buttonStyle} ${outlineStyle} w-full justify-center`}
+                  className={`${baseBtn} ${primaryBtn} w-full justify-center`}
                 >
-                  <FiUserPlus />
                   Register
                 </Link>
               </div>
@@ -85,22 +87,20 @@ export default function UserData() {
         </>
       ) : (
         <div className="flex items-center gap-3">
-          <span className="text-[#D4A49C] font-semibold flex items-center gap-1">
-            <FiUser className="text-[#4A413C]" />
-            <span className="hidden sm:inline">Hi</span>
-            {user.name || "User"}
+          <span className="text-[#D4A49C] font-medium flex items-center gap-1">
+            <FiUser />
+            Hi, {user.name?.split(" ")[0] || "User"}
           </span>
+
           <button
             onClick={() => {
               localStorage.removeItem("token");
               setUser(null);
-              setToken(null);
-              window.location.assign("/login");
+              navigate("/login");
             }}
-            className={`${buttonStyle} bg-[#EBEFEE] text-[#542C3C] border border-[#D4A49C] hover:bg-[#D4A49C] hover:text-white`}
+            className={`${baseBtn} bg-[#EBEFEE] text-[#542C3C] border border-[#D4A49C] hover:bg-[#D4A49C] hover:text-white`}
           >
-            <FiLogOut />
-            Logout
+            <FiLogOut /> Logout
           </button>
         </div>
       )}
