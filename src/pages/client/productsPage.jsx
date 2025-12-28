@@ -5,70 +5,74 @@ import ProductCard from "../../components/product-card";
 
 export default function ProductsPage() {
   const [productList, setProductList] = useState([]);
-  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
-  const API_BASE = import.meta.env.VITE_BACKEND_URL + "/api/product";
+  const API = import.meta.env.VITE_BACKEND_URL + "/api/product";
 
-  /* ================= LOAD ALL PRODUCTS ================= */
-  function loadProducts() {
-    setLoading(true);
-    axios
-      .get(API_BASE)
-      .then((res) => {
-        const data = Array.isArray(res.data) ? res.data : res.data.products;
-        setProductList(data || []);
-      })
-      .catch((err) => {
-        console.error("Product load error:", err);
-        setProductList([]);
-      })
-      .finally(() => setLoading(false));
-  }
+  /* ================= LOAD PRODUCTS ================= */
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(API);
+      const data = Array.isArray(res.data) ? res.data : res.data.products;
+      setProductList(data || []);
+    } catch (err) {
+      console.error("Load error:", err);
+      setProductList([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     loadProducts();
   }, []);
 
   /* ================= SEARCH ================= */
-  function searchProducts() {
-    if (!search.trim()) {
-      loadProducts();
-      return;
-    }
+  const searchProducts = async () => {
+    if (!search.trim()) return loadProducts();
 
-    setLoading(true);
-    axios
-      .get(`${API_BASE}/search/${encodeURIComponent(search)}`)
-      .then((res) => {
-        const data = Array.isArray(res.data) ? res.data : res.data.products;
-        setProductList(data || []);
-      })
-      .catch((err) => {
-        console.error("Search error:", err);
-        setProductList([]);
-      })
-      .finally(() => setLoading(false));
-  }
+    try {
+      setLoading(true);
+      const res = await axios.get(`${API}/search/${encodeURIComponent(search)}`);
+      const data = Array.isArray(res.data) ? res.data : res.data.products;
+      setProductList(data || []);
+    } catch (err) {
+      console.error("Search error:", err);
+      setProductList([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <section className="min-h-screen bg-white/90">
+    <div className="relative min-h-screen text-[#4A413C]">
+      {/* ================= BACKGROUND ================= */}
+      <div
+        className="fixed inset-0 -z-10 bg-cover bg-center blur-sm"
+        style={{
+          backgroundImage:
+            "url('https://i.pinimg.com/1200x/63/4e/d5/634ed52c8a9c9dfcee81f451bcc8ec0c.jpg')",
+        }}
+      />
+
       {/* ================= SEARCH BAR ================= */}
       <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
-          <input
-            type="text"
-            placeholder="Search products…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && searchProducts()}
-            className="w-full sm:w-80 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9D6777]"
-          />
+        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-center">
+          <div className="flex items-center gap-2 w-full max-w-xl">
+            <input
+              type="text"
+              placeholder="Search beauty products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && searchProducts()}
+              className="flex-1 px-4 py-2 rounded-full border border-gray-300 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#9D6777]"
+            />
 
-          <div className="flex gap-2">
             <button
               onClick={searchProducts}
-              className="px-6 py-2 rounded-full bg-gradient-to-r from-[#542C3C] to-[#9D6777] text-white font-medium hover:brightness-110 transition"
+              className="px-4 py-2 rounded-full bg-[#542C3C] text-white text-sm font-medium hover:bg-[#9D6777] transition"
             >
               Search
             </button>
@@ -78,7 +82,7 @@ export default function ProductsPage() {
                 setSearch("");
                 loadProducts();
               }}
-              className="px-6 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+              className="px-4 py-2 rounded-full border border-gray-300 text-sm text-gray-600 hover:bg-gray-100 transition"
             >
               Reset
             </button>
@@ -86,10 +90,10 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* ================= CONTENT ================= */}
+      {/* ================= PRODUCTS ================= */}
       <main className="max-w-7xl mx-auto px-4 py-10">
         {loading ? (
-          <div className="flex justify-center items-center min-h-[50vh]">
+          <div className="flex justify-center items-center h-[60vh]">
             <Loader />
           </div>
         ) : productList.length === 0 ? (
@@ -105,6 +109,6 @@ export default function ProductsPage() {
           </div>
         )}
       </main>
-    </section>
+    </div>
   );
 }
