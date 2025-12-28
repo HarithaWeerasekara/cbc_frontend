@@ -1,72 +1,150 @@
-import Footer from "../components/footer";
+import { useState } from "react";
 import Header from "../components/header";
+import Footer from "../components/footer";
 
 export default function ReviewsPage() {
+  const [name, setName] = useState("");
+  const [feedback, setFeedback] = useState("");
+
   const reviews = [
     {
       name: "Kamini Devage",
       feedback:
-        "I’ve been using Crystel Beauty Clear products for two months now, and my skin has never felt better. Highly recommended!",
+        "I’ve been using Crystel Beauty Clear products for two months now, and my skin has never felt better.",
     },
     {
       name: "Yasidu Weerasinghe",
       feedback:
-        "Excellent customer service and fast delivery. I loved the packaging and the product quality is amazing.",
-    },
-    {
-      name: "Danushka Prabath",
-      feedback:
-        "I was skeptical at first, but after trying the whitening cream, I noticed visible changes in just two weeks. Impressive results!",
+        "Excellent customer service and fast delivery. The quality is outstanding.",
     },
     {
       name: "Samudrika Nanayakkara",
       feedback:
-        "The best natural cosmetic brand in Sri Lanka. Gentle on skin and smells fantastic. Keep it up!",
-    },
-    {
-      name: "Kavindu Mendis",
-      feedback:
-        "I recommended Crystel Beauty Clear to all my friends. Great product range and very affordable.",
-    },
-    {
-      name: "Ranjana Senanayaka",
-      feedback:
-        "High-quality ingredients and real results. I will definitely purchase again.",
+        "Gentle on skin and smells amazing. Highly recommended local brand.",
     },
   ];
 
   return (
-    <div className="relative min-h-screen flex flex-col text-[#521B41]">
-      {/* Fullscreen background with blur */}
-      <div
-        className="fixed inset-0 -z-10 bg-cover bg-center filter blur-sm"
-        style={{
-          backgroundImage:
-            "url('https://i.pinimg.com/1200x/63/4e/d5/634ed52c8a9c9dfcee81f451bcc8ec0c.jpg')",
-        }}
-      />
-
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#fdfbff] via-[#f6e9f3] to-[#eef2ff] text-[#3f1d33]">
       <Header />
 
-      <main className="flex-grow w-full max-w-6xl mx-auto px-4 sm:px-6 py-6">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6">
-          What Our Customers Say
-        </h2>
+      <main className="flex-grow px-4 py-12">
+        <div className="max-w-6xl mx-auto space-y-16">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {reviews.map((review, index) => (
-            <div
-              key={index}
-              className="bg-white/80 backdrop-blur-md p-4 sm:p-6 rounded-lg shadow-md transition hover:shadow-lg"
-            >
-              <p className="text-base sm:text-lg font-semibold mb-2">
-                {review.name}
-              </p>
-              <p className="text-sm sm:text-base text-gray-800">
-                {review.feedback}
-              </p>
+          {/* 🎬 CINEMATIC HEADER */}
+          <section className="text-center animate-fadeIn">
+            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">
+              Loved by Our Customers
+            </h1>
+            <p className="mt-4 text-gray-600 max-w-xl mx-auto">
+              Real voices. Real results. Trusted by customers across Sri Lanka.
+            </p>
+          </section>
+
+          {/* ⭐ REVIEWS GRID */}
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {reviews.map((review, index) => (
+              <div
+                key={index}
+                className="
+                  bg-white/90 backdrop-blur
+                  border border-gray-200
+                  rounded-2xl p-6
+                  shadow-sm
+                  transition-all duration-500
+                  hover:-translate-y-1
+                  hover:shadow-md
+                  animate-slideUp
+                "
+                style={{ animationDelay: `${index * 120}ms` }}
+              >
+                <div className="mb-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 text-white flex items-center justify-center font-bold">
+                    {review.name.charAt(0)}
+                  </div>
+                </div>
+
+                <p className="font-semibold text-lg">{review.name}</p>
+                <p className="text-sm text-gray-700 mt-2 leading-relaxed">
+                  “{review.feedback}”
+                </p>
+              </div>
+            ))}
+          </section>
+
+          {/* ✍️ WRITE REVIEW */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+            
+            {/* FORM */}
+            <div className="bg-white/90 backdrop-blur rounded-2xl border border-gray-200 p-6 shadow-sm">
+              <h2 className="text-2xl font-bold mb-4">
+                Write a Review
+              </h2>
+
+              <input
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="
+                  w-full mb-3 px-4 py-2 rounded-lg
+                  border border-gray-300
+                  focus:outline-none focus:ring-2 focus:ring-pink-400
+                "
+              />
+
+              <textarea
+                placeholder="Share your experience..."
+                rows="4"
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+                className="
+                  w-full px-4 py-2 rounded-lg
+                  border border-gray-300
+                  focus:outline-none focus:ring-2 focus:ring-pink-400
+                "
+              />
+
+              <button
+                disabled
+                className="
+                  mt-4 w-full py-2 rounded-lg
+                  bg-gradient-to-r from-pink-600 to-purple-600
+                  text-white font-semibold
+                  opacity-60 cursor-not-allowed
+                "
+              >
+                Submit (Coming Soon)
+              </button>
             </div>
-          ))}
+
+            {/* 👀 LIVE PREVIEW */}
+            <div className="animate-fadeIn">
+              <p className="text-sm text-gray-500 mb-2">Live Preview</p>
+
+              <div className="
+                bg-white/95 backdrop-blur
+                border border-dashed border-gray-300
+                rounded-2xl p-6
+                shadow-sm
+              ">
+                <div className="mb-3">
+                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-600">
+                    {name ? name.charAt(0) : "?"}
+                  </div>
+                </div>
+
+                <p className="font-semibold text-lg">
+                  {name || "Your Name"}
+                </p>
+
+                <p className="text-sm text-gray-700 mt-2 leading-relaxed italic">
+                  “{feedback || "Your review will appear here as you type..." }”
+                </p>
+              </div>
+            </div>
+          </section>
+
         </div>
       </main>
 
