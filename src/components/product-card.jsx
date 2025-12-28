@@ -1,34 +1,59 @@
 import { Link } from "react-router-dom";
 
 export default function ProductCard({ product }) {
+  const image = product.images?.[0] || "/placeholder.webp";
+  const hasDiscount = product.price < product.labeledPrice;
+
   return (
     <Link
       to={`/overview/${product.productId}`}
-      className="w-[250px] h-[360px] m-4 bg-white rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition duration-300"
+      aria-label={`View details for ${product.name}`}
+      className="group w-[260px] rounded-2xl bg-white border border-gray-200 shadow-sm 
+                 hover:shadow-xl transition-all duration-300 focus:outline-none 
+                 focus:ring-2 focus:ring-pink-400"
     >
-      {/* Product Image */}
-      <img
-        src={product.images?.[0]}
-        alt={product.name}
-        className="w-full h-[200px] object-cover rounded-t-xl"
-      />
+      {/* Image */}
+      <div className="relative w-full h-[210px] overflow-hidden rounded-t-2xl bg-gray-100">
+        <img
+          src={image}
+          alt={product.name}
+          loading="lazy"
+          decoding="async"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          onError={(e) => (e.currentTarget.src = "/placeholder.webp")}
+        />
 
-      {/* Product Details */}
+        {hasDiscount && (
+          <span className="absolute top-3 left-3 bg-pink-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+            SALE
+          </span>
+        )}
+      </div>
+
+      {/* Content */}
       <div className="p-4 text-center">
-        <p className="text-xs text-gray-400 mb-1">{product.productId}</p>
-
-        <p className="text-lg font-semibold text-[#9B3C6C] truncate">
-          {product.name}
+        <p className="text-[11px] text-gray-400 tracking-wide mb-1">
+          {product.productId}
         </p>
 
-        <p className="mt-2 text-base font-bold text-gray-800">
-          LKR {product.price?.toFixed(2)}
-          {product.price < product.labeledPrice && (
-            <span className="text-sm text-gray-400 line-through ml-2">
+        <h3
+          className="text-[15px] font-semibold text-gray-900 truncate"
+          title={product.name}
+        >
+          {product.name}
+        </h3>
+
+        <div className="mt-3 flex justify-center items-center gap-2">
+          <span className="text-lg font-bold text-pink-700">
+            LKR {product.price?.toFixed(2)}
+          </span>
+
+          {hasDiscount && (
+            <span className="text-sm text-gray-400 line-through">
               LKR {product.labeledPrice?.toFixed(2)}
             </span>
           )}
-        </p>
+        </div>
       </div>
     </Link>
   );
