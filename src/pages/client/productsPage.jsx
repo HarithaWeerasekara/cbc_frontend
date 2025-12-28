@@ -5,40 +5,41 @@ import ProductCard from "../../components/product-card";
 
 export default function ProductsPage() {
   const [productList, setProductList] = useState([]);
-  const [productsLoaded, setProductsLoaded] = useState(false);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Load all products initially
-  useEffect(() => {
-    if (!productsLoaded) {
-      setLoading(true);
-      axios.get(import.meta.env.VITE_BACKEND_URL + "/api/product/")
-        .then((res) => {
-          const data = Array.isArray(res.data) ? res.data : res.data.products;
-          setProductList(data || []);
-        })
-        .catch((err) => {
-          console.error("Error loading products:", err);
-          setProductList([]);
-        })
-        .finally(() => {
-          setLoading(false);
-          setProductsLoaded(true);
-        });
-    }
-  }, [productsLoaded]);
+  const API_BASE = import.meta.env.VITE_BACKEND_URL + "/api/product";
 
-  // Search products only on button click
-  function searchProducts() {
+  /* ================= LOAD ALL PRODUCTS ================= */
+  function loadProducts() {
     setLoading(true);
+    axios
+      .get(API_BASE)
+      .then((res) => {
+        const data = Array.isArray(res.data) ? res.data : res.data.products;
+        setProductList(data || []);
+      })
+      .catch((err) => {
+        console.error("Product load error:", err);
+        setProductList([]);
+      })
+      .finally(() => setLoading(false));
+  }
 
-    const baseUrl = import.meta.env.VITE_BACKEND_URL + "/api/product";
-    const fetchUrl = search.trim().length > 0
-      ? `${baseUrl}/search/${encodeURIComponent(search)}`
-      : `${baseUrl}/`;
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
-    axios.get(fetchUrl)
+  /* ================= SEARCH ================= */
+  function searchProducts() {
+    if (!search.trim()) {
+      loadProducts();
+      return;
+    }
+
+    setLoading(true);
+    axios
+      .get(`${API_BASE}/search/${encodeURIComponent(search)}`)
       .then((res) => {
         const data = Array.isArray(res.data) ? res.data : res.data.products;
         setProductList(data || []);
@@ -47,63 +48,63 @@ export default function ProductsPage() {
         console.error("Search error:", err);
         setProductList([]);
       })
-      .finally(() => {
-        setLoading(false);
-        setProductsLoaded(true);
-      });
+      .finally(() => setLoading(false));
   }
 
   return (
-    <div className="relative flex flex-col min-h-screen text-[#521B41]">
-      {/* Search Bar */}
-      <div className="w-full h-[60px] bg-[#F2D3D3] flex justify-center items-center">
-        <input
-          type="text"
-          placeholder="Search"
-          value={search}
-          className="w-[300px] h-[30px] border-2 border-[#521B41] rounded-md px-2 focus:outline-none focus:border-[#521B41]"
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <button
-          className="ml-2 px-4 py-2 bg-[#521B41] text-white rounded-md hover:bg-[#3d0f2a] transition-colors"
-          onClick={searchProducts}
-        >
-          Search
-        </button>
+    <section className="min-h-screen bg-white/90">
+      {/* ================= SEARCH BAR ================= */}
+      <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
+          <input
+            type="text"
+            placeholder="Search products…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && searchProducts()}
+            className="w-full sm:w-80 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9D6777]"
+          />
 
-        <button className="ml-2 px-4 py-2 bg-[#521B41] text-white rounded-md hover:bg-[#3d0f2a] transition-colors"
-        onClick={()=>{
-          setProductsLoaded(false);
-        }} >
-          Reset
-        </button>
+          <div className="flex gap-2">
+            <button
+              onClick={searchProducts}
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-[#542C3C] to-[#9D6777] text-white font-medium hover:brightness-110 transition"
+            >
+              Search
+            </button>
+
+            <button
+              onClick={() => {
+                setSearch("");
+                loadProducts();
+              }}
+              className="px-6 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Background */}
-      <div
-        className="fixed inset-0 -z-10 bg-cover bg-center filter blur-sm"
-        style={{
-          backgroundImage:
-            "url('https://i.pinimg.com/1200x/63/4e/d5/634ed52c8a9c9dfcee81f451bcc8ec0c.jpg')",
-        }}
-      />
-
-      {/* Product Grid */}
-      <main className="flex-grow py-10 px-4 max-w-7xl mx-auto w-full">
+      {/* ================= CONTENT ================= */}
+      <main className="max-w-7xl mx-auto px-4 py-10">
         {loading ? (
-          <div className="flex justify-center items-center h-[60vh]">
+          <div className="flex justify-center items-center min-h-[50vh]">
             <Loader />
           </div>
+        ) : productList.length === 0 ? (
+          <div className="text-center py-20 text-gray-500">
+            <p className="text-lg font-medium">No products found</p>
+            <p className="text-sm mt-2">Try a different keyword</p>
+          </div>
         ) : (
-          <div className="flex justify-center">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {productList.map((product) => (
-                <ProductCard key={product.productId} product={product} />
-              ))}
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {productList.map((product) => (
+              <ProductCard key={product.productId} product={product} />
+            ))}
           </div>
         )}
       </main>
-    </div>
+    </section>
   );
 }
