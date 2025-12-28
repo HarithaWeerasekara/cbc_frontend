@@ -9,14 +9,15 @@ const supabase = createClient(
 export default async function mediaUpload(file) {
   if (!file) throw new Error("File is null");
 
-  const fileExt = file.name.split(".").pop();
-  const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
+  // ✅ FORCE JPG (policy requirement)
+  const fileName = `public/${Date.now()}-${crypto.randomUUID()}.jpg`;
 
   const { error } = await supabase.storage
-    .from("images") // bucket name
+    .from("images")
     .upload(fileName, file, {
       cacheControl: "3600",
       upsert: false,
+      contentType: "image/jpeg",
     });
 
   if (error) {
