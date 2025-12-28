@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { FiSearch, FiX } from "react-icons/fi";
 import Loader from "../../components/loader";
 import ProductCard from "../../components/product-card";
 
@@ -35,7 +36,9 @@ export default function ProductsPage() {
 
     try {
       setLoading(true);
-      const res = await axios.get(`${API}/search/${encodeURIComponent(search)}`);
+      const res = await axios.get(
+        `${API}/search/${encodeURIComponent(search)}`
+      );
       const data = Array.isArray(res.data) ? res.data : res.data.products;
       setProductList(data || []);
     } catch (err) {
@@ -48,36 +51,57 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen text-[#4A413C] bg-gradient-to-br from-[#fdfbff] via-[#f6e9f3] to-[#eef2ff]">
-      
-      {/* ================= SEARCH BAR ================= */}
-      <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-center">
-          <div className="flex items-center gap-2 w-full max-w-xl">
+
+      {/* ================= MODERN SEARCH ================= */}
+      <div className="sticky top-[72px] z-30">
+        <div className="flex justify-center px-4 pt-6">
+          <div
+            className="
+              w-full max-w-xl
+              flex items-center gap-2
+              px-4 py-3
+              rounded-full
+              bg-white/80 backdrop-blur-xl
+              border border-white/40
+              shadow-lg
+              focus-within:shadow-[0_0_0_4px_rgba(236,72,153,0.15)]
+              transition
+            "
+          >
+            <FiSearch className="text-pink-500 text-lg" />
+
             <input
               type="text"
-              placeholder="Search beauty products..."
+              placeholder="Search products, ingredients, skin types..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && searchProducts()}
-              className="flex-1 px-4 py-2 rounded-full border border-gray-300 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#9D6777]"
+              className="
+                flex-1 bg-transparent
+                text-sm sm:text-base
+                placeholder-gray-400
+                focus:outline-none
+              "
             />
 
-            <button
-              onClick={searchProducts}
-              className="px-4 py-2 rounded-full bg-gradient-to-r from-[#9D6777] to-[#542C3C] text-white text-sm font-medium hover:brightness-110 transition"
-            >
-              Search
-            </button>
-
-            <button
-              onClick={() => {
-                setSearch("");
-                loadProducts();
-              }}
-              className="px-4 py-2 rounded-full border border-gray-300 text-sm text-gray-600 hover:bg-gray-100 transition"
-            >
-              Reset
-            </button>
+            {search && (
+              <button
+                onClick={() => {
+                  setSearch("");
+                  loadProducts();
+                }}
+                className="
+                  p-2 rounded-full
+                  text-gray-400
+                  hover:text-pink-500
+                  hover:bg-pink-50
+                  transition
+                "
+                aria-label="Clear search"
+              >
+                <FiX />
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -89,7 +113,7 @@ export default function ProductsPage() {
             <Loader />
           </div>
         ) : productList.length === 0 ? (
-          <div className="text-center py-20 text-gray-500">
+          <div className="text-center py-24 text-gray-500">
             <p className="text-lg font-medium">No products found</p>
             <p className="text-sm mt-2">Try another keyword ✨</p>
           </div>
