@@ -17,30 +17,18 @@ export default function ProductCard({ product }) {
       to={`/overview/${product.productId}`}
       aria-label={`View details for ${product.name}`}
       className="
-        group relative w-[260px] rounded-2xl
-        bg-white/90 backdrop-blur
+        group w-[260px] rounded-xl
+        bg-white
         border border-gray-200
         shadow-sm
-        transition-all duration-500
-        hover:-translate-y-1
-        hover:shadow-[0_0_25px_rgba(236,72,153,0.35)]
-        focus:outline-none focus:ring-2 focus:ring-pink-400
+        transition-all duration-300
+        hover:shadow-md
+        hover:-translate-y-0.5
+        focus:outline-none focus:ring-2 focus:ring-[#9D6777]
       "
     >
-      {/* Neon glow layer */}
-      <div
-        className="
-          absolute -inset-[1px] rounded-2xl
-          bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500
-          opacity-0 blur-md
-          group-hover:opacity-70
-          transition duration-500
-          -z-10
-        "
-      />
-
       {/* Image */}
-      <div className="relative w-full h-[210px] overflow-hidden rounded-t-2xl bg-gray-100">
+      <div className="relative w-full h-[210px] overflow-hidden rounded-t-xl bg-gray-100">
         <img
           src={image}
           alt={product.name}
@@ -48,35 +36,33 @@ export default function ProductCard({ product }) {
           decoding="async"
           className="
             w-full h-full object-cover
-            transition-transform duration-700
-            group-hover:scale-110
+            transition-transform duration-500
+            group-hover:scale-[1.03]
           "
           onError={(e) => (e.currentTarget.src = "/placeholder.webp")}
         />
 
-        {/* Trending badge */}
+        {/* Trending */}
         {product.trending && (
           <span className="
             absolute top-3 left-3
-            bg-gradient-to-r from-purple-600 to-pink-600
-            text-white text-[11px] font-semibold
+            bg-[#542C3C]
+            text-white text-[11px] font-medium
             px-3 py-1 rounded-full
-            shadow-md
           ">
-            🔥 Trending
+            Trending
           </span>
         )}
 
-        {/* Discount badge */}
+        {/* Discount */}
         {hasDiscount && (
           <span className="
             absolute top-3 right-3
-            bg-pink-600 text-white
-            text-[11px] font-bold
+            bg-[#9D6777]
+            text-white text-[11px] font-semibold
             px-3 py-1 rounded-full
-            shadow-md
           ">
-            -{discountPercent}%
+            {discountPercent}% OFF
           </span>
         )}
       </div>
@@ -89,10 +75,10 @@ export default function ProductCard({ product }) {
 
         <h3
           className="
-            text-[15px] font-semibold text-gray-900
+            text-[15px] font-semibold text-gray-800
             truncate
-            group-hover:text-pink-600
             transition-colors
+            group-hover:text-[#542C3C]
           "
           title={product.name}
         >
@@ -100,7 +86,7 @@ export default function ProductCard({ product }) {
         </h3>
 
         <div className="mt-3 flex justify-center items-center gap-2">
-          <span className="text-lg font-bold text-pink-700">
+          <span className="text-lg font-bold text-[#542C3C]">
             LKR {product.price?.toFixed(2)}
           </span>
 
