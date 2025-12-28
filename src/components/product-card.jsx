@@ -17,18 +17,18 @@ export default function ProductCard({ product }) {
       to={`/overview/${product.productId}`}
       aria-label={`View details for ${product.name}`}
       className="
-        group w-[260px] rounded-xl
-        bg-white
+        group relative w-[260px] rounded-2xl
+        bg-white/90 backdrop-blur
         border border-gray-200
         shadow-sm
-        transition-all duration-300
-        hover:shadow-md
-        hover:-translate-y-0.5
-        focus:outline-none focus:ring-2 focus:ring-[#9D6777]
+        transition-all duration-500
+        hover:-translate-y-1
+        hover:shadow-[0_12px_30px_rgba(0,0,0,0.12)]
+        focus:outline-none focus:ring-2 focus:ring-pink-400
       "
     >
       {/* Image */}
-      <div className="relative w-full h-[210px] overflow-hidden rounded-t-xl bg-gray-100">
+      <div className="relative w-full h-[210px] overflow-hidden rounded-t-2xl bg-gray-100">
         <img
           src={image}
           alt={product.name}
@@ -36,33 +36,35 @@ export default function ProductCard({ product }) {
           decoding="async"
           className="
             w-full h-full object-cover
-            transition-transform duration-500
-            group-hover:scale-[1.03]
+            transition-transform duration-700
+            group-hover:scale-110
           "
           onError={(e) => (e.currentTarget.src = "/placeholder.webp")}
         />
 
-        {/* Trending */}
+        {/* Trending badge */}
         {product.trending && (
           <span className="
             absolute top-3 left-3
-            bg-[#542C3C]
-            text-white text-[11px] font-medium
+            bg-gradient-to-r from-purple-600 to-pink-600
+            text-white text-[11px] font-semibold
             px-3 py-1 rounded-full
+            shadow-md
           ">
-            Trending
+            🔥 Trending
           </span>
         )}
 
-        {/* Discount */}
+        {/* Discount badge */}
         {hasDiscount && (
           <span className="
             absolute top-3 right-3
-            bg-[#9D6777]
-            text-white text-[11px] font-semibold
+            bg-pink-600 text-white
+            text-[11px] font-bold
             px-3 py-1 rounded-full
+            shadow-md
           ">
-            {discountPercent}% OFF
+            -{discountPercent}%
           </span>
         )}
       </div>
@@ -75,10 +77,10 @@ export default function ProductCard({ product }) {
 
         <h3
           className="
-            text-[15px] font-semibold text-gray-800
+            text-[15px] font-semibold text-gray-900
             truncate
+            group-hover:text-pink-600
             transition-colors
-            group-hover:text-[#542C3C]
           "
           title={product.name}
         >
@@ -86,7 +88,7 @@ export default function ProductCard({ product }) {
         </h3>
 
         <div className="mt-3 flex justify-center items-center gap-2">
-          <span className="text-lg font-bold text-[#542C3C]">
+          <span className="text-lg font-bold text-pink-700">
             LKR {product.price?.toFixed(2)}
           </span>
 
