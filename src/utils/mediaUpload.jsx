@@ -2,17 +2,18 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  "https://qpazhreskxeldgzmmudy.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFwYXpocmVza3hlbGRnem1tdWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTA1ODEsImV4cCI6MjA2NDM4NjU4MX0.Jhfsp7Y5s4tL895AtI7vALgcdpUatESqWMP3cHrPVi0" // keep this safe in .env in real projects
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
 export default async function mediaUpload(file) {
   if (!file) throw new Error("File is null");
 
-  const fileName = `${Date.now()}-${file.name}`;
+  const fileExt = file.name.split(".").pop();
+  const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
 
-  const { data, error } = await supabase.storage
-    .from("images")
+  const { error } = await supabase.storage
+    .from("images") // bucket name
     .upload(fileName, file, {
       cacheControl: "3600",
       upsert: false,
@@ -20,12 +21,12 @@ export default async function mediaUpload(file) {
 
   if (error) {
     console.error("Upload failed:", error);
-    throw new Error("File upload failed");
+    throw error;
   }
 
-  const { data: publicData } = supabase.storage
+  const { data } = supabase.storage
     .from("images")
     .getPublicUrl(fileName);
 
-  return publicData.publicUrl;
+  return data.publicUrl;
 }
