@@ -41,58 +41,69 @@ export default function CartPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] py-10 px-4 flex justify-center text-white">
-      <div className="w-full max-w-4xl bg-white/95 text-[#2d1b2a] rounded-2xl shadow-2xl p-6 sm:p-8 backdrop-blur">
+    <div className="min-h-screen bg-gradient-to-b from-[#120c12] via-[#1a1219] to-[#0b070b] px-4 py-14 text-[#f4edf1]">
+      <div className="max-w-5xl mx-auto">
 
-        {/* Title */}
-        <h1 className="text-3xl font-extrabold mb-6 text-center bg-gradient-to-r from-[#64242F] to-[#9D6777] bg-clip-text text-transparent">
-          Your Shopping Cart
-        </h1>
+        {/* HEADER */}
+        <div className="text-center mb-14">
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-[#f3c6d3] via-[#ffffff] to-[#d7a0b3] bg-clip-text text-transparent">
+            Your Cart
+          </h1>
+          <p className="mt-3 text-sm text-white/50">
+            Curated beauty, thoughtfully selected
+          </p>
+        </div>
 
+        {/* EMPTY */}
         {cart.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-lg text-gray-500">🛒 Your cart is empty</p>
+          <div className="text-center py-28 bg-white/5 rounded-3xl backdrop-blur border border-white/10">
+            <p className="text-lg text-white/60">Your cart is currently empty</p>
             <button
               onClick={() => navigate("/products")}
-              className="mt-6 px-10 py-3 rounded-full bg-gradient-to-r from-[#64242F] to-[#9D6777] text-white font-semibold hover:scale-105 transition"
+              className="mt-8 px-12 py-4 rounded-full bg-gradient-to-r from-[#7b3246] to-[#b76e87] text-white font-semibold tracking-wide hover:scale-105 transition"
             >
-              Start Shopping
+              Explore Products
             </button>
           </div>
         ) : (
           <>
-            {/* CART ITEMS */}
+            {/* ITEMS */}
             <div className="space-y-6">
               {cart.map((item, index) => (
                 <div
                   key={index}
-                  className="group flex flex-col sm:flex-row items-center justify-between gap-6 bg-gradient-to-r from-white to-[#f7eef2] border border-[#eadce3] rounded-2xl p-5 shadow-sm hover:shadow-xl transition"
+                  className="group relative flex flex-col sm:flex-row items-center gap-6 rounded-3xl p-6 bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/20 transition"
                 >
-                  {/* Product */}
-                  <div className="flex items-center gap-5 w-full sm:w-auto">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-24 h-24 object-cover rounded-xl shadow-md group-hover:scale-105 transition"
-                    />
-                    <div>
-                      <h2 className="text-lg font-semibold">{item.name}</h2>
-                      <p className="text-sm text-gray-500">
-                        {item.altNames?.join(", ")}
-                      </p>
-                      <p className="text-sm font-medium mt-1">
-                        LKR {item.price.toFixed(2)}
-                      </p>
-                    </div>
+                  {/* glow */}
+                  <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition bg-gradient-to-r from-[#7b324620] to-[#b76e8720]" />
+
+                  {/* IMAGE */}
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="relative w-28 h-28 rounded-2xl object-cover shadow-xl"
+                  />
+
+                  {/* INFO */}
+                  <div className="relative flex-1 text-center sm:text-left">
+                    <h2 className="text-lg font-semibold">
+                      {item.name}
+                    </h2>
+                    <p className="text-xs text-white/50 mt-1">
+                      {item.altNames?.join(", ")}
+                    </p>
+                    <p className="mt-2 text-sm font-medium text-white/80">
+                      LKR {item.price.toFixed(2)}
+                    </p>
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex flex-col sm:flex-row items-center gap-6">
-                    {/* Quantity */}
-                    <div className="flex items-center rounded-full border border-gray-300 overflow-hidden">
+                  {/* CONTROLS */}
+                  <div className="relative flex flex-col sm:flex-row items-center gap-5">
+                    {/* qty */}
+                    <div className="flex items-center rounded-full bg-black/30 border border-white/10 overflow-hidden">
                       <button
-                        className="px-4 py-1 bg-gray-100 hover:bg-gray-200 transition"
                         onClick={() => handleQuantityChange(item, -1)}
+                        className="px-4 py-1 hover:bg-white/10 transition"
                       >
                         −
                       </button>
@@ -100,26 +111,25 @@ export default function CartPage() {
                         {item.quantity}
                       </span>
                       <button
-                        className="px-4 py-1 bg-gray-100 hover:bg-gray-200 transition"
                         onClick={() => handleQuantityChange(item, 1)}
+                        className="px-4 py-1 hover:bg-white/10 transition"
                       >
                         +
                       </button>
                     </div>
 
-                    {/* Subtotal */}
-                    <div className="text-center sm:text-right">
-                      <p className="text-xs text-gray-500">Subtotal</p>
+                    {/* subtotal */}
+                    <div className="text-sm text-center sm:text-right">
+                      <p className="text-white/40">Subtotal</p>
                       <p className="font-semibold">
                         LKR {(item.price * item.quantity).toFixed(2)}
                       </p>
                     </div>
 
-                    {/* Remove */}
+                    {/* remove */}
                     <button
                       onClick={() => handleRemove(item.productId)}
-                      className="text-red-500 hover:text-red-700 text-xl transition"
-                      title="Remove"
+                      className="text-white/40 hover:text-red-500 transition text-xl"
                     >
                       <VscTrash />
                     </button>
@@ -129,37 +139,35 @@ export default function CartPage() {
             </div>
 
             {/* SUMMARY */}
-            <div className="mt-10 space-y-4">
-              <div className="flex justify-between text-lg">
-                <span>Original Price</span>
-                <span className="line-through text-gray-400">
+            <div className="mt-14 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-8 space-y-4">
+              <div className="flex justify-between text-sm text-white/60">
+                <span>Original</span>
+                <span className="line-through">
                   LKR {labeledTotal.toFixed(2)}
                 </span>
               </div>
 
-              <div className="flex justify-between text-lg">
-                <span>Discount</span>
-                <span className="text-red-600">
+              <div className="flex justify-between text-sm">
+                <span className="text-white/60">Discount</span>
+                <span className="text-[#f19aa8]">
                   − LKR {(labeledTotal - total).toFixed(2)}
                 </span>
               </div>
 
-              <div className="flex justify-between text-2xl font-bold border-t pt-4">
+              <div className="flex justify-between text-2xl font-bold pt-4 border-t border-white/10">
                 <span>Total</span>
-                <span className="text-green-600">
+                <span className="text-[#8fe1b3]">
                   LKR {total.toFixed(2)}
                 </span>
               </div>
             </div>
 
-            {/* CHECKOUT */}
+            {/* CTA */}
             <button
-              className="w-full mt-8 py-4 rounded-full bg-gradient-to-r from-[#64242F] to-[#9D6777] text-white text-lg font-semibold shadow-lg hover:scale-[1.03] hover:shadow-2xl transition"
               onClick={() =>
-                navigate("/checkout", {
-                  state: { items: cart },
-                })
+                navigate("/checkout", { state: { items: cart } })
               }
+              className="w-full mt-10 py-5 rounded-full bg-gradient-to-r from-[#7b3246] to-[#b76e87] text-white text-lg font-semibold tracking-wide shadow-[0_20px_60px_rgba(183,110,135,0.35)] hover:scale-[1.04] transition"
             >
               Proceed to Checkout →
             </button>
