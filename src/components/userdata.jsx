@@ -1,109 +1,111 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiLogIn, FiLogOut, FiUserPlus, FiUser } from "react-icons/fi";
+import { FiLogOut, FiShoppingBag, FiUser } from "react-icons/fi";
 
 export default function UserData() {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
-    const controller = new AbortController();
+    if (!token) return;
 
     axios
       .get(import.meta.env.VITE_API_URL + "/user", {
         headers: { Authorization: `Bearer ${token}` },
-        signal: controller.signal,
       })
       .then((res) => setUser(res.data))
-      .catch(() => {
-        localStorage.removeItem("token");
-        setUser(null);
-      })
-      .finally(() => setLoading(false));
-
-    return () => controller.abort();
+      .catch(() => setUser(null));
   }, []);
 
-  const baseBtn =
-    "px-4 py-2 rounded-full flex items-center gap-2 text-sm font-medium transition-all shadow hover:shadow-md";
+  function logout() {
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/login");
+  }
 
-  const primaryBtn =
-    "bg-gradient-to-r from-[#9D6777] to-[#542C3C] text-white hover:brightness-110";
+  /* ================= NOT LOGGED IN ================= */
+  if (!user) {
+    return (
+      <div className="flex items-center gap-3">
+        <Link
+          to="/login"
+          className="
+            px-4 py-2 rounded-full text-sm font-medium
+            border border-pink-500/40 text-pink-600
+            hover:bg-pink-50 transition
+          "
+        >
+          Login
+        </Link>
 
-  if (loading) return null; // prevents UI flicker
+        <Link
+          to="/register"
+          className="
+            px-4 py-2 rounded-full text-sm font-semibold
+            bg-gradient-to-r from-pink-500 to-purple-500
+            text-white shadow-md
+            hover:scale-105 hover:brightness-110
+            transition
+          "
+        >
+          Sign up
+        </Link>
+      </div>
+    );
+  }
 
+  /* ================= LOGGED IN ================= */
   return (
-    <div className="flex items-center">
-      {!user ? (
-        <>
-          {/* Desktop */}
-          <div className="hidden sm:flex gap-3">
-            <Link to="/login" className={`${baseBtn} ${primaryBtn}`}>
-              <FiLogIn /> Login
-            </Link>
-            <Link to="/register" className={`${baseBtn} ${primaryBtn}`}>
-              <FiUserPlus /> Register
-            </Link>
-          </div>
+    <div className="flex items-center gap-4">
+      {/* Shop Button */}
+      <Link
+        to="/products"
+        className="
+          hidden sm:flex items-center gap-2
+          px-4 py-2 rounded-full
+          bg-white/70 backdrop-blur
+          border border-white/40
+          text-sm font-medium
+          shadow-sm
+          hover:shadow-md hover:scale-105
+          transition
+        "
+      >
+        <FiShoppingBag className="text-pink-600" />
+        Shop
+      </Link>
 
-          {/* Mobile */}
-          <div className="sm:hidden relative">
-            <button
-              aria-label="User menu"
-              onClick={() => setMobileMenuOpen((v) => !v)}
-              className="p-2 rounded-full hover:bg-white/10"
-            >
-              <FiLogIn size={22} />
-            </button>
+      {/* User pill */}
+      <div
+        className="
+          flex items-center gap-2
+          px-4 py-2 rounded-full
+          bg-white/70 backdrop-blur
+          border border-white/40
+          shadow-sm
+        "
+      >
+        <FiUser className="text-pink-600" />
 
-            {mobileMenuOpen && (
-              <div className="absolute right-0 mt-2 bg-white rounded-xl shadow-lg p-3 w-40 z-50">
-                <Link
-                  to="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`${baseBtn} ${primaryBtn} w-full justify-center mb-2`}
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`${baseBtn} ${primaryBtn} w-full justify-center`}
-                >
-                  Register
-                </Link>
-              </div>
-            )}
-          </div>
-        </>
-      ) : (
-        <div className="flex items-center gap-3">
-          <span className="text-[#D4A49C] font-medium flex items-center gap-1">
-            <FiUser />
-            Hi, {user.name?.split(" ")[0] || "User"}
-          </span>
+        <span className="text-sm font-medium text-gray-700 max-w-[90px] truncate">
+          {user.name || "User"}
+        </span>
 
-          <button
-            onClick={() => {
-              localStorage.removeItem("token");
-              setUser(null);
-              navigate("/login");
-            }}
-            className={`${baseBtn} bg-[#EBEFEE] text-[#542C3C] border border-[#D4A49C] hover:bg-[#D4A49C] hover:text-white`}
-          >
-            <FiLogOut /> Logout
-          </button>
-        </div>
-      )}
+        <button
+          onClick={logout}
+          title="Logout"
+          className="
+            p-1.5 rounded-full
+            text-gray-500
+            hover:text-red-500 hover:bg-red-50
+            transition
+          "
+        >
+          <FiLogOut size={16} />
+        </button>
+      </div>
     </div>
   );
 }
