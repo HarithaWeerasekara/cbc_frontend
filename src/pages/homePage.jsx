@@ -15,7 +15,6 @@ import Loader from "../components/loader";
 export default function HomePage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
 
   /* ================= LOAD PRODUCTS ================= */
   useEffect(() => {
@@ -35,29 +34,6 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#0b061a] via-[#2b1640] to-[#12081e] text-white">
       <Header />
-
-      {/* ================= FIXED SEARCH (ALWAYS VISIBLE) ================= */}
-      <div className="fixed top-20 left-1/2 z-50 w-[92%] max-w-2xl -translate-x-1/2">
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-full shadow-2xl px-5 py-3 flex items-center gap-3">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="
-              w-full bg-transparent
-              outline-none
-              text-sm sm:text-base
-              text-white
-              placeholder:text-white/60
-            "
-          />
-          <span className="text-white/70 text-xs sm:text-sm">⌘ K</span>
-        </div>
-      </div>
-
-      {/* ADD SPACE SO CONTENT DOESN'T GO UNDER SEARCH */}
-      <div className="h-28" />
 
       <main className="flex-grow">
         <Routes>
