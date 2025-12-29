@@ -89,7 +89,7 @@ export default function Header() {
                 aria-expanded={menuOpen}
                 aria-label="User menu"
                 className="
-                  text-xl text-gray-700
+                  text-xl text-gray-800
                   hover:text-pink-600
                   transition
                   focus:outline-none
@@ -150,7 +150,7 @@ export default function Header() {
           className="
             mt-5 flex justify-center gap-8
             text-sm sm:text-base font-medium
-            text-gray-500
+            text-gray-800
           "
         >
           {["Home", "Products", "Contact", "Reviews"].map((item) => (
