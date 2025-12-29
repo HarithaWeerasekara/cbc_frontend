@@ -30,14 +30,16 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="
-      sticky top-0 z-50
-      bg-white/70 backdrop-blur-xl
-      border-b border-white/30
-      shadow-[0_8px_30px_rgba(0,0,0,0.04)]
-    ">
+    <header
+      className="
+        sticky top-0 z-50
+        bg-white/70 backdrop-blur-xl
+        border-b border-white/30
+        shadow-[0_8px_30px_rgba(0,0,0,0.04)]
+      "
+    >
       <div className="max-w-7xl mx-auto px-4 py-4">
-        {/* Top bar */}
+        {/* ================= TOP BAR ================= */}
         <div className="flex items-center justify-between relative">
           {/* Cart */}
           <Link
@@ -45,18 +47,20 @@ export default function Header() {
             aria-label="View cart"
             className="
               relative text-xl
-              text-gray-700
+              text-gray-800
               hover:text-pink-600
               transition
             "
           >
             <GrCart />
-            <span className="
-              absolute -inset-2 rounded-full
-              bg-pink-500/10
-              opacity-0 hover:opacity-100
-              transition
-            " />
+            <span
+              className="
+                absolute -inset-2 rounded-full
+                bg-pink-500/10
+                opacity-0 hover:opacity-100
+                transition
+              "
+            />
           </Link>
 
           {/* Logo */}
@@ -74,7 +78,7 @@ export default function Header() {
             CRYSTEL
           </Link>
 
-          {/* User area */}
+          {/* User Area */}
           <div className="flex items-center gap-4">
             {/* Desktop */}
             <div className="hidden md:block">
@@ -120,6 +124,7 @@ export default function Header() {
                   to="/login"
                   className="
                     block px-4 py-3 text-sm
+                    text-gray-800
                     hover:bg-pink-50
                     transition
                   "
@@ -132,6 +137,7 @@ export default function Header() {
                   to="/register"
                   className="
                     block px-4 py-3 text-sm
+                    text-gray-800
                     hover:bg-pink-50
                     transition
                   "
@@ -144,13 +150,12 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Navigation */}
+        {/* ================= NAVIGATION ================= */}
         <nav
           aria-label="Primary navigation"
           className="
             mt-5 flex justify-center gap-8
             text-sm sm:text-base font-medium
-            text-gray-800
           "
         >
           {["Home", "Products", "Contact", "Reviews"].map((item) => (
@@ -159,6 +164,7 @@ export default function Header() {
               to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
               className="
                 relative transition
+                text-gray-800
                 hover:text-pink-600
                 after:absolute after:left-1/2 after:-bottom-2
                 after:h-[2px] after:w-0
