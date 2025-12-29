@@ -32,9 +32,7 @@ export default function HomePage() {
 
   /* ================= SCROLL SEARCH BAR ================= */
   useEffect(() => {
-    const onScroll = () => {
-      setShowSearch(window.scrollY > 250);
-    };
+    const onScroll = () => setShowSearch(window.scrollY > 250);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -83,8 +81,8 @@ export default function HomePage() {
                     </h1>
 
                     <p className="mt-6 max-w-3xl mx-auto text-lg text-white/80">
-                      Trusted since <strong>2001</strong>. Natural science, global
-                      ingredients, confident results.
+                      Trusted since <strong>2001</strong>. Natural science,
+                      global ingredients, confident results.
                     </p>
 
                     <div className="mt-12 flex justify-center gap-5">
@@ -109,7 +107,7 @@ export default function HomePage() {
                 <section className="bg-gradient-to-b from-[#faf7ff] to-[#f3e8ff] text-[#3b2a3a]">
                   <div className="max-w-7xl mx-auto px-4 py-24 space-y-24">
 
-                    {/* TRENDING */}
+                    {/* ================= TRENDING ================= */}
                     <div>
                       <h2 className="text-3xl font-bold text-center text-[#542C3C]">
                         🔥 Trending Products
@@ -120,7 +118,7 @@ export default function HomePage() {
                           <Loader />
                         </div>
                       ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-12">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-12 place-items-center sm:place-items-stretch">
                           {trending.map((p) => (
                             <ProductCard key={p.productId} product={p} />
                           ))}
@@ -128,7 +126,7 @@ export default function HomePage() {
                       )}
                     </div>
 
-                    {/* DISCOUNT */}
+                    {/* ================= DISCOUNT ================= */}
                     <div>
                       <h2 className="text-3xl font-bold text-center text-[#542C3C]">
                         💸 Big Discounts
@@ -138,14 +136,14 @@ export default function HomePage() {
                         Limited-time offers you shouldn’t miss
                       </p>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-12">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-12 place-items-center sm:place-items-stretch">
                         {discounted.map((p) => (
                           <ProductCard key={p.productId} product={p} />
                         ))}
                       </div>
                     </div>
 
-                    {/* CTA */}
+                    {/* ================= CTA ================= */}
                     <div className="relative rounded-3xl bg-gradient-to-r from-[#542C3C] to-[#9D6777] p-10 text-center shadow-2xl overflow-hidden">
                       <div className="absolute inset-0 bg-white/10 backdrop-blur-sm" />
                       <div className="relative">
@@ -164,6 +162,7 @@ export default function HomePage() {
                         </Link>
                       </div>
                     </div>
+
                   </div>
                 </section>
               </>
