@@ -10,62 +10,58 @@ export default function ForgotPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Send OTP
-  const sendEmail = async () => {
+  const API = `${import.meta.env.VITE_BACKEND_URL}/api/user`;
+
+  // ======================
+  // SEND OTP
+  // ======================
+  const sendEmail = async (e) => {
+    e.preventDefault();
+    if (!email) return toast.error("Email is required");
+
     setLoading(true);
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/user/send-otp`,
-        { email }
-      );
-
-      if (res.data?.otp) {
-        setEmailSent(true);
-        alert("OTP sent to your email.");
-      } else {
-        alert("Failed to send OTP.");
-      }
+      await axios.post(`${API}/send-otp`, { email });
+      setEmailSent(true);
+      toast.success("OTP sent to your email");
     } catch (err) {
-      alert("Server error. Try again.");
+      toast.error(err?.response?.data?.message || "Failed to send OTP");
     } finally {
       setLoading(false);
     }
   };
 
-  
-  async function changePassword(e) {
+  // ======================
+  // CHANGE PASSWORD
+  // ======================
+  const changePassword = async (e) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
+      return toast.error("Passwords do not match");
     }
+
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/user/changePW`,
-        {
-          email: email,
-          otp: otp,
-          password: password,
-        }
-      );
-      console.log(response.data);
-      toast.success("Password changed successfully.");
+      const res = await axios.post(`${API}/changePW`, {
+        email,
+        otp,
+        password,
+      });
 
-      location.href = "/login"; // Redirect to login page
-      
-    } catch (error) {
-      console.error("Error changing password:", error);
-      toast.error("Failed to change password. Please try again.");
-      window.location.reload(); // Reload the page to reset state
+      toast.success(res.data.message || "Password changed successfully");
+      window.location.href = "/login";
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Password reset failed");
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#fdf6f8] px-4">
       <div className="w-full max-w-md p-6 rounded-xl shadow-lg border border-gray-300 bg-white">
+
         {emailSent ? (
           <>
             <h1 className="text-2xl font-semibold text-center mb-4">
@@ -74,6 +70,7 @@ export default function ForgotPassword() {
             <p className="text-sm text-center mb-6">
               Enter the OTP sent to your email and set a new password.
             </p>
+
             <form className="flex flex-col gap-4" onSubmit={changePassword}>
               <input
                 type="text"
@@ -81,28 +78,31 @@ export default function ForgotPassword() {
                 required
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                className="p-3 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-pink-400"
+                className="p-3 border rounded-lg focus:ring-2 focus:ring-pink-400"
               />
+
               <input
                 type="password"
                 placeholder="New Password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="p-3 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-pink-400"
+                className="p-3 border rounded-lg focus:ring-2 focus:ring-pink-400"
               />
+
               <input
                 type="password"
                 placeholder="Confirm New Password"
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="p-3 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-pink-400"
+                className="p-3 border rounded-lg focus:ring-2 focus:ring-pink-400"
               />
+
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-pink-800 hover:bg-pink-600 text-white py-3 rounded-lg text-sm font-medium disabled:opacity-50"
+                className="bg-pink-800 hover:bg-pink-600 text-white py-3 rounded-lg font-medium disabled:opacity-50"
               >
                 {loading ? "Resetting..." : "Reset Password"}
               </button>
@@ -123,32 +123,29 @@ export default function ForgotPassword() {
             <p className="text-sm text-center mb-6">
               Enter your email to receive a one-time password (OTP).
             </p>
-            <form
-              className="flex flex-col gap-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                sendEmail();
-              }}
-            >
+
+            <form className="flex flex-col gap-4" onSubmit={sendEmail}>
               <input
                 type="email"
                 placeholder="Email Address"
                 required
-                onChange={(e) => setEmail(e.target.value)}
                 value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
-                className="p-3 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-pink-400"
+                className="p-3 border rounded-lg focus:ring-2 focus:ring-pink-400"
               />
+
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-pink-800 hover:bg-pink-600 text-white py-3 rounded-lg text-sm font-medium disabled:opacity-50"
+                className="bg-pink-800 hover:bg-pink-600 text-white py-3 rounded-lg font-medium disabled:opacity-50"
               >
                 {loading ? "Sending..." : "Send OTP"}
               </button>
             </form>
           </>
         )}
+
       </div>
     </div>
   );
