@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
 import Loader from "../../components/loader";
 import ProductCard from "../../components/product-card";
@@ -8,9 +8,6 @@ export default function ProductsPage() {
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [showSearch, setShowSearch] = useState(true);
-
-  const lastScrollY = useRef(0);
 
   const API = import.meta.env.VITE_BACKEND_URL + "/api/product";
 
@@ -52,37 +49,11 @@ export default function ProductsPage() {
     }
   };
 
-  /* ================= HIDE SEARCH ON SCROLL ================= */
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
-        // scrolling down
-        setShowSearch(false);
-      } else {
-        // scrolling up
-        setShowSearch(true);
-      }
-
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <div className="min-h-screen text-[#4A413C] bg-gradient-to-br from-[#fdfbff] via-[#f6e9f3] to-[#eef2ff]">
 
-      {/* ================= SEARCH BAR ================= */}
-      <div
-        className={`
-          sticky top-[72px] z-30
-          transition-all duration-300
-          ${showSearch ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6 pointer-events-none"}
-        `}
-      >
+      {/* ================= FIXED SEARCH BAR ================= */}
+      <div className="sticky top-[72px] z-30">
         <div className="flex justify-center px-3 sm:px-4 pt-4 sm:pt-6">
           <div
             className="
@@ -94,7 +65,6 @@ export default function ProductsPage() {
               border border-white/40
               shadow-lg
               focus-within:shadow-[0_0_0_4px_rgba(236,72,153,0.15)]
-              transition
             "
           >
             <FiSearch className="text-pink-500 text-lg shrink-0" />
