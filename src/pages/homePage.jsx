@@ -58,11 +58,21 @@ export default function HomePage() {
 
                     <div className="mt-12 flex justify-center gap-5">
                       <Link
-                        to="/products"
-                        className="px-9 py-4 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 font-semibold shadow-[0_0_30px_rgba(236,72,153,0.4)] hover:scale-110 transition-all"
+                      to="/products"
+                      className="
+                        px-9 py-4
+                        rounded-full
+                        bg-gradient-to-r from-pink-500 to-purple-600
+                        text-white
+                        font-semibold
+                        shadow-[0_0_30px_rgba(236,72,153,0.4)]
+                        hover:scale-110
+                        transition-all
+                      "
                       >
                         Shop Now
-                      </Link>
+                      </Link>                                       
+
 
                       <Link
                         to="/contact"
