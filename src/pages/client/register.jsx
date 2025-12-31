@@ -1,10 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
-
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -13,6 +11,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   async function handleRegister() {
@@ -24,7 +23,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/user`,
         {
           email,
@@ -46,75 +45,80 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col lg:flex-row">
-      
-      {/* Left side: Logo area */}
-      <div className="hidden lg:flex lg:w-1/2 h-screen justify-center items-center bg-[#fff7f7]">
-        <img
-          src={logo}
-          alt="Logo"
-          className="max-w-[70%] h-auto object-contain"
-        />
-      </div>
+    <div className="w-full min-h-screen flex items-center justify-center bg-[url(/login-bg.jpg)] bg-cover bg-center px-4">
+      <div className="w-full max-w-md bg-white/30 backdrop-blur-2xl shadow-2xl rounded-2xl p-8 border border-white/40">
 
-      {/* Right side: Register form */}
-      <div className="w-full lg:w-1/2 flex justify-center items-center bg-[url(/login-bg.jpg)] bg-cover bg-center p-4">
-        <div className="w-full max-w-md bg-white/30 backdrop-blur-2xl shadow-2xl rounded-2xl py-10 px-6 flex flex-col items-center">
+        {/* Logo */}
+        <div className="flex justify-center mb-4">
+          <img src={logo} alt="Logo" className="w-20 h-auto" />
+        </div>
 
+        {/* Heading */}
+        <h2 className="text-2xl font-bold text-center text-pink-900 mb-1">
+          Create Account
+        </h2>
+        <p className="text-center text-sm text-gray-700 mb-6">
+          Join us and start your journey ✨
+        </p>
+
+        {/* Inputs */}
+        <div className="space-y-3">
           <input
             onChange={(e) => setFirstName(e.target.value)}
-            className="w-full h-12 bg-[#fecaca] border border-[#450a0a] rounded-xl text-center text-[#4c0519] mb-3"
+            className="w-full h-12 bg-white/70 border border-pink-300 rounded-xl px-4 text-pink-900 placeholder-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-400"
             type="text"
             placeholder="First Name"
           />
 
           <input
             onChange={(e) => setLastName(e.target.value)}
-            className="w-full h-12 bg-[#fecaca] border border-[#450a0a] rounded-xl text-center text-[#4c0519] mb-3"
+            className="w-full h-12 bg-white/70 border border-pink-300 rounded-xl px-4 text-pink-900 placeholder-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-400"
             type="text"
             placeholder="Last Name"
           />
 
           <input
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full h-12 bg-[#fecaca] border border-[#450a0a] rounded-xl text-center text-[#4c0519] mb-3"
+            className="w-full h-12 bg-white/70 border border-pink-300 rounded-xl px-4 text-pink-900 placeholder-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-400"
             type="email"
             placeholder="Email"
           />
 
           <input
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-12 bg-[#fecaca] border border-[#450a0a] rounded-xl text-center text-[#4c0519] mb-3"
+            className="w-full h-12 bg-white/70 border border-pink-300 rounded-xl px-4 text-pink-900 placeholder-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-400"
             type="password"
             placeholder="Password"
           />
 
           <input
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full h-12 bg-[#fecaca] border border-[#450a0a] rounded-xl text-center text-[#4c0519] mb-3"
+            className="w-full h-12 bg-white/70 border border-pink-300 rounded-xl px-4 text-pink-900 placeholder-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-400"
             type="password"
             placeholder="Confirm Password"
           />
-
-          <button
-            onClick={handleRegister}
-            className="w-full h-12 bg-[#fca5a5] border border-[#450a0a] text-[#4c0519] rounded-xl text-center font-semibold hover:bg-[#fb7185] transition mb-4"
-            disabled={loading}
-          >
-            {loading ? "Registering..." : "Register"}
-          </button>
-
-          <p className="text-gray-800 text-center text-sm font-semibold">
-            Already have an account?
-            <br />
-            <Link
-              to="/login"
-              className="text-pink-900 hover:text-pink-500 underline"
-            >
-              Login here
-            </Link>
-          </p>
         </div>
+
+        {/* Button */}
+        <button
+          onClick={handleRegister}
+          disabled={loading}
+          className="w-full h-12 mt-6 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold rounded-xl hover:opacity-90 transition disabled:opacity-60"
+        >
+          {loading ? "Registering..." : "Create Account"}
+        </button>
+
+        {/* Footer */}
+        <p className="text-center text-sm text-gray-800 mt-5">
+          Already have an account?
+          <br />
+          <Link
+            to="/login"
+            className="text-pink-700 font-semibold hover:underline"
+          >
+            Login here
+          </Link>
+        </p>
       </div>
     </div>
   );
